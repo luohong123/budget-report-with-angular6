@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
+  selector: 'rp-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'budget-report-angular6';
+  isCollapsed = false;
 }
