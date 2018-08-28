@@ -8,7 +8,7 @@
           <li nz-submenu>
             <span title><i class="anticon anticon-user"></i><span class="nav-text">基础设置</span></span>
             <ul>
-              <li nz-menu-item>报表任务</li>
+              <li nz-menu-item [routerLink]="[ '/table' ]">报表任务</li>
               <li nz-menu-item>报表格式</li>
               <li nz-menu-item>报表文件样式</li>
             </ul>
@@ -29,7 +29,7 @@
         </nz-header>
         <nz-content style="margin:0 16px;display:flex;flex-direction: column;">
           <nz-breadcrumb style="margin:16px 0;">
-            <nz-breadcrumb-item>全面预算报表</nz-breadcrumb-item>
+            <nz-breadcrumb-item ><a [routerLink]="[ '/home' ]">全面预算报表</a></nz-breadcrumb-item>
           </nz-breadcrumb>
           <div style="padding:24px; background: #fff; min-height: 360px;flex:1;">
             <router-outlet></router-outlet>

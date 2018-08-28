@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  pid: 'BUDGET',
+  projectName: '全面预算报表',
+  systemurl: '/server/',
+  apiurl: '/server/api/',
+  logurl: '/server/api/',
+  authurl: '/server/api/',
+  wsurl: 'ws://10.56.23.218/server/msg',
+  license: ''
 };
 
 /*

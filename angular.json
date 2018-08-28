@@ -52,6 +52,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "budget-report-angular6:build"
+          
           },
           "configurations": {
             "production": {
