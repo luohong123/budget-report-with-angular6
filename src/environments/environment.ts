@@ -7,9 +7,9 @@ export const environment = {
   pid: 'BUDGET',
   projectName: '全面预算报表',
   systemurl: '/server/',
-  apiurl: '/fcbudgetserver/api/',
-  logurl: '/fcbudgetserver/api/',
-  authurl: '/fcbudgetserver/api/',
+  apiurl: '/server/api/',
+  logurl: '/server/api/',
+  authurl: '/server/api/',
   wsurl: 'ws://10.56.23.218/server/msg',
   license: ''
 };

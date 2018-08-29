@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DaoService, ProvidersService } from 'fccore2';
+import { DaoService } from 'fccore2';
 @Injectable({
   providedIn: 'root'
 })

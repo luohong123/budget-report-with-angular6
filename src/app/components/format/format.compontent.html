@@ -1,0 +1,19 @@
+<fc-layoutpanel class="full" fcFull="true">
+  <fc-layoutrow fccontent fcSpan="74" style="height:100%;">
+    <div fccontent1>
+      <fc-tlblist [fcAppid]="appId" (fcEvent)="tlblistEvent($event)"></fc-tlblist>
+      <form class="list-search" name="searchForm" #searchForm>
+        <div class="list-search-every">
+          <!-- <fc-any fcLabel="报表任务" style="width:300px;float:left;" (ngModelChange)="createListBySelection($event)" [appId]='BG_RP_TASK'
+            [fcLabelCode]="'STASKNAME'" [fcValueCode]="'STASKCODE'"></fc-any> -->
+            <fc-combo #taskcombo fcLabel="分类" fcFieldCode="STASKNAME" fcAppid="BG_RP_TASK" fcLabelCode="STASKNAME" [(ngModel)]='a'
+            fcValueCode="ID" (ngModelChange)="selectTask($event)"  [ngModelOptions]="{standalone: true}" fcPlaceHolder="请选择">
+          </fc-combo>
+        </div>
+      </form>
+      <rpListdata (rpEvent)="listToolEvent($event)" [rpListOption]="rpListOption" [listdata] = "data"></rpListdata>
+    </div>
+  </fc-layoutrow>
+</fc-layoutpanel>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="提示" nzContent="确定删除该条数据吗?" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+</nz-modal>
