@@ -1,5 +1,5 @@
 {
-    "/fcbudgetserver": {
-        "target": "http://62.234.178.106:8080/"
+    "/server": {
+        "target": "http://localhost:8080/"
     }
 }
