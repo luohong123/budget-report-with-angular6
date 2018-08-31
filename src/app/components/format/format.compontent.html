@@ -1,14 +1,18 @@
 <fc-layoutpanel class="full" fcFull="true">
   <fc-layoutrow fccontent fcSpan="74" style="height:100%;">
     <div fccontent1>
-      <fc-tlblist [fcAppid]="appId" (fcEvent)="tlblistEvent($event)"></fc-tlblist>
+        <button nz-button nzType="primary" (click)="listAdd()">新增</button>
+      <!-- <fc-tlblist [fcAppid]="appId" (fcEvent)="tlblistEvent($event)"></fc-tlblist> -->
       <form class="list-search" name="searchForm" #searchForm>
         <div class="list-search-every">
           <!-- <fc-any fcLabel="报表任务" style="width:300px;float:left;" (ngModelChange)="createListBySelection($event)" [appId]='BG_RP_TASK'
             [fcLabelCode]="'STASKNAME'" [fcValueCode]="'STASKCODE'"></fc-any> -->
-            <fc-combo #taskcombo fcLabel="分类" fcFieldCode="STASKNAME" fcAppid="BG_RP_TASK" fcLabelCode="STASKNAME" [(ngModel)]='a'
-            fcValueCode="ID" (ngModelChange)="selectTask($event)"  [ngModelOptions]="{standalone: true}" fcPlaceHolder="请选择">
-          </fc-combo>
+            <!-- <fc-combo #taskcombo fcLabel="分类" fcFieldCode="STASKNAME" fcAppid="BG_RP_TASK" fcLabelCode="STASKNAME" [(ngModel)]='a'
+            fcValueCode="ID" (ngModelChange)="selectTask($event)"  [ngModelOptions]="{standalone: true}" fcPlaceHolder="请选择"> 
+          </fc-combo>-->
+          <nz-select style="width: 200px;" [(ngModel)]='TASKID' name="STASKCODE" (ngModelChange)="selectTask($event)"	>
+            <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.STASKNAME" [nzValue]="option.ID"></nz-option>
+          </nz-select>
         </div>
       </form>
       <rpListdata (rpEvent)="listToolEvent($event)" [rpListOption]="rpListOption" [listdata] = "data"></rpListdata>

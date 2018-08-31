@@ -14,14 +14,6 @@ import { Component, OnInit, Input } from '@angular/core';
       style="display:block;" ></fc-text>
     </fc-layoutcol>
     <fc-textarea fctoolbar  [(ngModel)]="SDES" fcPlaceHolder="描述" fcCol="1" fcRows="2" fcLabel="说明 " name="SDES"></fc-textarea>
-    <div class="customize-footer" fccontent2>
-      <button fctoolbar nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleCancel($event)">
-      返 回
-      </button>
-      <button fctoolbar nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirm($event)">
-        确 认
-      </button>
-    </div>
   </div>
   `,
   styles: [`
@@ -101,29 +93,7 @@ export class TaskModalComponent implements OnInit {
         this.SDES= value.SDES;
         this.ID= value.ID;
     }
-    // constructor(private subject: NzModalSubject) {
-    //     this.subject.on('onDestory', () => {
 
-    //     });
-    // }
-    
-
-    // confirm() {
-    //   const param = {
-    //       ID: this.ID,
-    //       STASKCODE: this.STASKCODE,
-    //       STASKNAME: this.STASKNAME,
-    //       NORDER: this.NORDER,
-    //       SDES: this.SDES,
-
-    //   };
-    //   this.subject.next(JSON.stringify(param));
-    //   this.subject.destroy();
-    // }
-
-    // handleCancel(e) {
-    //     this.subject.destroy('onCancel');
-    // }
 
     ngOnInit() {
     }

@@ -119,13 +119,11 @@ export class BgrpTaskComponent {
         this.queryRowData();
     }
 
-    //按钮事件
-    tlblistEvent(event: any){
-        switch (event.eventName){
-            case 'listAdd' :
-                this.showModalForComponent("");
-                break;
-        }
+    /**
+     * 新增
+     */
+    listAdd(){
+        this.showModalForComponent("");
     }
     /**
      * 查询数据
@@ -144,11 +142,28 @@ export class BgrpTaskComponent {
             this.data = array;
         });
     }
+    showModalForComponent(param: string): void{
+        const this_ = this;
+        const modal = this.modalService.create({
+            nzTitle: '报表任务编辑',
+            nzContent: TaskModalComponent,
+            nzOnOk(event) {
+                //console.log(event);
+                this_.insertOrUpdate(event);
+            },
+            nzOnCancel() {
+            },
+            nzComponentParams: {
+                param: param
+            }
+        });
+      
+    }
 
      /**
      * @description 编辑弹窗
      */
-    showModalForComponent(param: string) {
+    //showModalForComponent(param: string) {
         // let this_ = this;
         // const subscription = this.modalService.open({
         //     title: '报表格式编辑',
@@ -169,7 +184,7 @@ export class BgrpTaskComponent {
         //     } catch(e) {
         //     }
         // })
-    }
+    //}
    
     /**
      * 判断参数是否是json格式

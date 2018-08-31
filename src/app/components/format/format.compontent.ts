@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { BgrpFormatService } from '../../services/format.service';
 import { FormatModalComponent } from './format-modal/format-modal.component';
-import { NzModalService, NzMessageService, NzModalRef } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
+import { BgrpTaskService } from 'src/app/services/task.service';
+import { FormatAddModalComponent } from 'src/app/components/format/format-modal/format_modal_add.component';
 @Component({
     selector: 'format',
     templateUrl: './format.compontent.html',
@@ -54,12 +55,15 @@ import { NzModalService, NzMessageService, NzModalRef } from 'ng-zorro-antd';
         }
     `]
 })
-export class BgrpFormatComponent {
+export class BgrpFormatComponent implements OnInit{
+    
     classifyrowData: any[];
     anySelections: any;
     selectValue: any;
     chooseDeleteParam: any;
     isVisible = false;
+    listOfOption: any[] = [];
+    TASKID: String = "";
 
     rpListOption: any = {
         // 是否显示工具栏
@@ -97,13 +101,8 @@ export class BgrpFormatComponent {
                 menuTabs: []
             },
             {
-                headerName: '行属性',
-                field: 'R',
-                menuTabs: []
-            },
-            {
-                headerName: '列属性',
-                field: 'C',
+                headerName: '数据属性',
+                field: 'D',
                 menuTabs: []
             },
             {
@@ -125,19 +124,42 @@ export class BgrpFormatComponent {
         // }
     ];
 
-    constructor(public mainService: BgrpFormatService, public router: Router, public activedRoute: ActivatedRoute
-        , private modalService: NzModalService, private message: NzMessageService) {
-        this.queryRowData("");
+    constructor(public mainService: BgrpFormatService, private modalService: NzModalService,
+         private message: NzMessageService,private taskService: BgrpTaskService) {
+        this.isVisible = false;
+
     }
 
-
-    //按钮事件
-    tlblistEvent(event: any){
-        switch (event.eventName){
-            case 'listAdd' :
-                this.showModalForComponent("");
-                break;
+    ngOnInit(): void {
+        const this_ = this;
+        //查看cookie中有没有保存taskid;
+        //若有,将TASKID取出赋值
+        let arrStr = document.cookie.split("; ");
+        for (let i = 0; i < arrStr.length; i++) {
+            let temp = arrStr[i].split("=");
+            if (temp[0] == "TASKID")
+                this_.TASKID=temp[1];
         }
+        
+        //为nz-select赋值,查询任务
+        this_.taskService.queryData({
+            STASKCODE : "",
+            STASKNAME : ""
+        }).subscribe(result=>{
+            result.DATA.forEach(element => {
+                this_.listOfOption.push(element);
+            })
+        })
+        if(this_.TASKID === ""){
+            this_.TASKID = this_.listOfOption[0].ID;
+        }
+
+        this.queryRowData(this_.TASKID);
+
+    }
+
+    listAdd(): void{
+        this.showModalForComponent("");
     }
 
     queryRowData(e): any {
@@ -145,7 +167,6 @@ export class BgrpFormatComponent {
         const array = [];
         this.mainService.queryData(e).subscribe(result => {
             result.DATA.forEach(element => {
-
                 array.push(element);
             });
             this.data = array;
@@ -160,7 +181,7 @@ export class BgrpFormatComponent {
                 break;
             case 'design':
                 break;
-            case 'delete':
+            case 'remove':
                 this.chooseDeleteParam = event.param;
                 this.isVisible = true;
                 break;
@@ -172,29 +193,29 @@ export class BgrpFormatComponent {
      * @description 弹窗
      */
     showModalForComponent(param: string) {
+        let task;
         let this_ = this;
+        this.listOfOption.forEach(element =>{
+            if(element.ID===this_.TASKID){
+                task = element; 
+            }
+        })
         
-        const subscription: NzModalRef = this.modalService.create({
-            nzTitle: '报表格式编辑',
-            nzContent: FormatModalComponent,
+        console.log();
+        const modal = this.modalService.create({
+            nzTitle: '新建报表',
+            nzContent: FormatAddModalComponent,
+            nzFooter: null,
+            nzWidth: '700',
             nzOnOk(event) {
-                console.log(event);
+                this_.insertOrUpdate(event);
             },
             nzOnCancel() {
             },
-            nzFooter: null,
             nzComponentParams: {
-                param: param
+                param: task
             }
         });
-        // subscription.getContentComponent().subscribe(result => {
-        //     console.log(result);
-        //     try {
-        //         result=JSON.parse(result);
-        //         this_.insertOrUpdate(result);
-        //     } catch(e) {
-        //     }
-        // })
     }
     /**
      * 
@@ -217,7 +238,9 @@ export class BgrpFormatComponent {
     /**
      * 选择报表任务查询
      */
-    selectTask(event) {
+    selectTask(event): void {
+        document.cookie = "TASKID="+event;
+        this.TASKID = event;
         this.queryRowData(event);
     }
     /**

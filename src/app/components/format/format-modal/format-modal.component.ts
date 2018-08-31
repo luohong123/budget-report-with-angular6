@@ -5,21 +5,13 @@ import { Component, OnInit, Input } from '@angular/core';
   selector: 'bgrp-format-modal',
   template: `
   <div>
-    <fc-layoutcol fcheader>
+    <fc-layoutcol fcheader fccontent1>
       <fc-text fccontent1 [(ngModel)]="SCODE"  fcPlaceHolder="请输入报表编码" 
         fcLabel="报表编码" style="display:block;"></fc-text>
       <fc-text fccontent2  [(ngModel)]="SNAME" fcPlaceHolder="请输入报表名称"
         fcLabel="报表名称" style="display:block;" ></fc-text>
     </fc-layoutcol>
     <fc-textarea fctoolbar  [(ngModel)]="SDES" fcPlaceHolder="描述" fcCol="1" fcRows="2" fcLabel="说明 " name="SDES"></fc-textarea>
-    <div class="customize-footer" fccontent2>
-      <button fctoolbar nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleCancel($event)">
-      返 回
-      </button>
-      <button fctoolbar nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirm($event)">
-        确 认
-      </button>
-    </div>
   </div>
 
   `,

@@ -17,17 +17,30 @@ import {FccomponentModule} from 'fccomponent2';
 import { RpListdataComponent } from 'src/app/components/common/rpListdata.compontent';
 import { BgrpTaskService } from 'src/app/services/task.service';
 import { BgrpFormatService } from 'src/app/services/format.service';
+import { TaskModalComponent } from 'src/app/components/task/task_modal.compontent';
+import { LocationStrategy } from '@angular/common';
+import { HashLocationStrategy } from '@angular/common';
+import { FormatModalComponent } from 'src/app/components/format/format-modal/format-modal.component';
+import { FormatAddModalComponent } from 'src/app/components/format/format-modal/format_modal_add.component';
 
 registerLocaleData(zh);
 
 @NgModule({
+  entryComponents: [
+    TaskModalComponent,
+    FormatModalComponent,
+    FormatAddModalComponent
+  ],
   declarations: [
     AppComponent,
     TableComponent,
     HomeComponent,
     BgrpTaskComponent,
     BgrpFormatComponent,
-    RpListdataComponent
+    RpListdataComponent,
+    TaskModalComponent,
+    FormatModalComponent,
+    FormatAddModalComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +52,7 @@ registerLocaleData(zh);
     FccoreModule,
     FccomponentModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN },
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy,},
     BgrpTaskService,
     BgrpFormatService,
     NzModalService
