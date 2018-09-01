@@ -50,14 +50,14 @@ import { BgrpFormatService } from 'src/app/services/format.service';
     <div class="steps-content" *ngIf="current === 1">
       <div class="form-control clearfix">
         <label>表头属性:</label>
-        <nz-select class="form-right" [(ngModel)]='H' name="H" nzPlaceHolder="请选择" nzMode="tags">
-          <nz-option *ngFor="let option of attrList" [nzLabel]="option.SDIM_NAME" [nzValue]="option.SDIM_CODE"></nz-option>
+        <nz-select class="form-right" [(ngModel)]='H' name="H" nzPlaceHolder="请选择" nzMode="tags" (ngModelChange)="selectChange('disH',$event)">
+          <nz-option *ngFor="let option of attrList" [nzLabel]="option.SDIM_NAME" [nzValue]="option.SDIM_CODE" [nzDisabled]="option.disH"></nz-option>
         </nz-select>
       </div>
       <div class="form-control clearfix">
         <label>数据属性:</label>
-        <nz-select class="form-right" [(ngModel)]='D' name="D" nzPlaceHolder="请选择" nzMode="tags">
-          <nz-option *ngFor="let option of attrList" [nzLabel]="option.SDIM_NAME" [nzValue]="option.SDIM_CODE"></nz-option>
+        <nz-select class="form-right" [(ngModel)]='D' name="D" nzPlaceHolder="请选择" nzMode="tags" (ngModelChange)="selectChange('disD',$event)">
+          <nz-option *ngFor="let option of attrList" [nzLabel]="option.SDIM_NAME" [nzValue]="option.SDIM_CODE" [nzDisabled]="option.disD"></nz-option>
         </nz-select>
       </div>
     </div>
@@ -207,10 +207,30 @@ export class FormatAddModalComponent {
     this.mainService.queryAttr("").subscribe(result =>{
       if(result.CODE === '0'){
         result.DATA.forEach(element => {
+          element.disH = false;
+          element.disD = false;
           this_.attrList.push(element);
         });
       }
     })
 
+  }
+
+  selectChange(mark: String , event: any[]): void{
+    this.attrList.forEach(i => {
+      if(mark === 'disH'){
+        if(event.indexOf(i.SDIM_CODE) !== -1){
+          i.disD = true;
+        }else {
+          i.disD = false;
+        }
+      }else if(mark === 'disD'){
+        if(event.indexOf(i.SDIM_CODE) !== -1){
+          i.disH = true;
+        }else {
+          i.disH = false;
+        }
+      }
+    })
   }
 }
