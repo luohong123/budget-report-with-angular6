@@ -4,6 +4,7 @@ import { FormatModalComponent } from './format-modal/format-modal.component';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { BgrpTaskService } from 'src/app/services/task.service';
 import { FormatAddModalComponent } from 'src/app/components/format/format-modal/format_modal_add.component';
+import { FormatEditModalComponent } from 'src/app/components/format/format-modal/format_modal_eidt.component';
 @Component({
     selector: 'format',
     templateUrl: './format.compontent.html',
@@ -113,16 +114,7 @@ export class BgrpFormatComponent implements OnInit{
         ]
     };
 
-    data: any[] = [
-        // {
-        //     SNAME    : '1',
-        //     SCODE    : '1',
-        //     LITLE   : 'John Brown',
-        //     ROW    : 32,
-        //     LINE: 'New York No. 1 Lake Park',
-        //     SDES:123,
-        // }
-    ];
+    data: any[] = [];
 
     constructor(public mainService: BgrpFormatService, private modalService: NzModalService,
          private message: NzMessageService,private taskService: BgrpTaskService) {
@@ -149,35 +141,34 @@ export class BgrpFormatComponent implements OnInit{
             result.DATA.forEach(element => {
                 this_.listOfOption.push(element);
             })
+            if(this_.TASKID === ""){
+                this_.TASKID = this_.listOfOption[0].ID;
+            }
+    
+            this.queryRowData();
         })
-        if(this_.TASKID === ""){
-            this_.TASKID = this_.listOfOption[0].ID;
-        }
-
-        this.queryRowData(this_.TASKID);
 
     }
 
     listAdd(): void{
-        this.showModalForComponent("");
+        this.showAddModal();
     }
 
-    queryRowData(e): any {
+    queryRowData(): void {
         this.data = [];
         const array = [];
-        this.mainService.queryData(e).subscribe(result => {
+        this.mainService.queryData(this.TASKID).subscribe(result => {
             result.DATA.forEach(element => {
                 array.push(element);
             });
             this.data = array;
         });
-
     }
     //表格操作按钮事件
-    listToolEvent(event) {
+    listToolEvent(event): void {
         switch (event.eventName) {
             case 'edit':
-                this.showModalForComponent(event.param);
+                this.showEditModal(event.param);
                 break;
             case 'design':
                 break;
@@ -192,7 +183,7 @@ export class BgrpFormatComponent implements OnInit{
     /**
      * @description 弹窗
      */
-    showModalForComponent(param: string) {
+    showAddModal(): void {
         let task;
         let this_ = this;
         this.listOfOption.forEach(element =>{
@@ -201,7 +192,6 @@ export class BgrpFormatComponent implements OnInit{
             }
         })
         
-        console.log();
         const modal = this.modalService.create({
             nzTitle: '新建报表',
             nzContent: FormatAddModalComponent,
@@ -210,25 +200,36 @@ export class BgrpFormatComponent implements OnInit{
             nzOnOk(event) {
                 this_.insertOrUpdate(event);
             },
-            nzOnCancel() {
+            nzOnCancel(componentParam) {
+                //点击弹框右上角❌,回调事件
+                if(componentParam.current === 2){
+                    this_.queryRowData();
+                }
             },
             nzComponentParams: {
                 param: task
             }
         });
+         //当关闭对话框时判断是否已经新增了数据,若已新增则更新表格数据
+         modal.afterClose.subscribe((result) =>{
+            if(result !== undefined && result.data === 'refresh'){
+                //更新表格数据
+                this_.queryRowData();
+            }
+        })
     }
+    
     /**
      * 
      * @param param 新增修改调用后台接口
      */
-    insertOrUpdate(param: any){
+    insertOrUpdate(param: any): void{
         let this_ = this;
         this.mainService.insertOrUpdate(param).subscribe(result => {
             if(result.CODE === "0"){
                 this_.message.success(result.MSG);
-                this_.queryRowData("");
-            }else if(result.CODE === "20001"){
-                this_.message.error(result.MSG);
+                //刷新列表数据
+                this_.queryRowData();
             }else{
                 this_.message.error(result.MSG);
             }
@@ -239,15 +240,16 @@ export class BgrpFormatComponent implements OnInit{
      * 选择报表任务查询
      */
     selectTask(event): void {
+        //将选择的任务id保存入cookie
         document.cookie = "TASKID="+event;
         this.TASKID = event;
-        this.queryRowData(event);
+        this.queryRowData();
     }
     /**
      * 删除提示框选择确定
      */
     handleOk(): void {
-        //this.deleteOne(this.chooseDeleteParam);
+        this.deleteOne(this.chooseDeleteParam);
         this.isVisible = false;
     }
     /**
@@ -261,14 +263,62 @@ export class BgrpFormatComponent implements OnInit{
      * 
      * @param param 新增修改调用后台接口
      */
-    deleteOne(param: any){
+    deleteOne(param: any): void{
         const this_ = this;
         this.mainService.deleteOne(param).subscribe(result => {
             if(result.CODE === "0"){
                 this_.message.success(result.MSG);
-                this_.queryRowData("");
-            }else if(result.CODE === "20001"){
+                //刷新列表数据
+                this_.queryRowData();
+            }else{
                 this_.message.error(result.MSG);
+            }
+        })
+    }
+
+    /**
+     * @description 编辑弹窗
+     */
+    showEditModal(param: string): void {
+        let this_ = this;
+        let task;
+        this.listOfOption.forEach(element =>{
+            if(element.ID===this_.TASKID){
+                task = element; 
+            }
+        })
+        const modal = this.modalService.create({
+            nzTitle: '编辑格式',
+            nzContent: FormatEditModalComponent,
+            nzWidth: '550',
+            nzOnOk(componentParam) {
+                const condition = {
+                    ID:componentParam.ID,
+                    SNAME:componentParam.SNAME,
+                    SCODE:componentParam.SCODE,
+                    SDES:componentParam.SDES,
+                }
+                this_.updateData(condition);
+            },
+            nzOnCancel(componentParam) {
+            },
+            nzComponentParams: {
+                param: {
+                    TASK : task,
+                    PARAM : param
+                }
+            }
+        });
+    }
+    updateData(param: any): void{
+        const this_ = this;
+        this.mainService.insertOrUpdate(param).subscribe(result => {
+            if(result.CODE === "0"){
+                this_.message.success(result.MSG);
+                //刷新列表数据
+                this_.queryRowData();
+            }else if(result.CODE === "20001"){
+                this_.message.success(result.DATA);
             }else{
                 this_.message.error(result.MSG);
             }

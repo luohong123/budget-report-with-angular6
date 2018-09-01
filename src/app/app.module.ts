@@ -5,9 +5,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import zh from '@angular/common/locales/zh';
 import { NgZorroAntdModule, NZ_I18N, zh_CN, NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
 import { AppRoutingModule } from './/app-routing.module';
 import { TableComponent } from './components/table/table.component';
 import { HomeComponent } from './components/home/home.component';
@@ -22,6 +22,11 @@ import { LocationStrategy } from '@angular/common';
 import { HashLocationStrategy } from '@angular/common';
 import { FormatModalComponent } from 'src/app/components/format/format-modal/format-modal.component';
 import { FormatAddModalComponent } from 'src/app/components/format/format-modal/format_modal_add.component';
+import { FileTemplateComponent } from 'src/app/components/file-template/file-template.component';
+import { BgrpFileTemplateService } from 'src/app/services/file-template.service';
+import { FileTemplateAddModalComponent } from 'src/app/components/file-template/file-template-modal/file-template-modal-add.component';
+import { FileTemplateEditModalComponent } from 'src/app/components/file-template/file-template-modal/file-template-modal-edit.component';
+import { FormatEditModalComponent } from 'src/app/components/format/format-modal/format_modal_eidt.component';
 
 registerLocaleData(zh);
 
@@ -29,7 +34,10 @@ registerLocaleData(zh);
   entryComponents: [
     TaskModalComponent,
     FormatModalComponent,
-    FormatAddModalComponent
+    FormatAddModalComponent,
+    FileTemplateAddModalComponent,
+    FileTemplateEditModalComponent,
+    FormatEditModalComponent,
   ],
   declarations: [
     AppComponent,
@@ -37,10 +45,14 @@ registerLocaleData(zh);
     HomeComponent,
     BgrpTaskComponent,
     BgrpFormatComponent,
+    FileTemplateComponent,
     RpListdataComponent,
     TaskModalComponent,
     FormatModalComponent,
-    FormatAddModalComponent
+    FormatAddModalComponent,
+    FileTemplateAddModalComponent,
+    FileTemplateEditModalComponent,
+    FormatEditModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,10 +64,11 @@ registerLocaleData(zh);
     FccoreModule,
     FccomponentModule,
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy,},
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},
     BgrpTaskService,
     BgrpFormatService,
-    NzModalService
+    NzModalService,
+    BgrpFileTemplateService
   ],
   bootstrap: [AppComponent]
 })

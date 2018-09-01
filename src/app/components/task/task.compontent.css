@@ -1,0 +1,7 @@
+.btn-tool{width:100%;margin-bottom:8px;}
+.clearfix{clear:both;}
+.list-search{width:100%;}
+.list-search-every{width:25%;float:left;}
+.list-search-every span{float: left;min-width:64px;line-height:32px;padding-right:5px;}
+.list-search-every input{float: left;width:calc(90% - 64px);}
+.list-search-button button{margin-right:5px;}

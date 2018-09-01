@@ -1,3 +1,18 @@
-<p>
-  file-template works!
-</p>
+<div>
+  <div nz-row>
+      <button nz-button nzType="primary" (click)="addClick()">新增</button>
+  </div>
+  <div nz-row>
+      <div nz-col nzSpan="2">
+        <span>报表任务:</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <nz-select style="width: 200px;" [(ngModel)]='TASKID' name="STASKCODE" (ngModelChange)="selectTask($event)"	>
+          <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.STASKNAME" [nzValue]="option.ID"></nz-option>
+        </nz-select>
+      </div>
+  </div>
+  <div>
+    <rpListdata (rpEvent)="listToolEvent($event)" [rpListOption]="rpListOption" [listdata] = "data"></rpListdata>
+  </div>
+</div>

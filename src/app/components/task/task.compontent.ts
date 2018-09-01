@@ -7,53 +7,7 @@ import { TaskModalComponent } from './task_modal.compontent';
 @Component({
     selector: 'task',     //selector 要更正对应
     templateUrl: './task.compontent.html',   //html 写在这里
-    styles: [`
-        :host ::ng-deep .fc-layoutpanel .fc-content{
-        height:100%;
-        }
-        .list-search {
-        width:100%;
-        }
-        .list-search:after{
-        content:'';
-        :host ::ng-deep .fc-layoutpanel .fc-content{
-        height:100%;
-        }
-        .list-search {
-        width:100%;
-        }
-        .list-search:after{
-        content:'';
-        display:block;
-        clear:both;
-        }
-        .list-search-every{
-        width:25%;
-        float:left;
-        }
-        :host ::ng-deep .list-search-every .ant-form-item-label{
-        min-width:64px;
-        }
-        
-        :host ::ng-deep .fc-layoutpanel .fc-content{
-        height:100%;
-        }
-        .list-search {
-        width:100%;
-        }
-        .list-search:after{
-        content:'';
-        display:block;
-        clear:both;
-        }
-        .list-search-every{
-        width:25%;
-        float:left;
-        }
-        :host ::ng-deep .list-search-every .ant-form-item-label{
-        min-width:64px;
-        }
-    `]
+    styleUrls: [`./task.compontent.css`]
 })
 export class BgrpTaskComponent {
     
@@ -210,7 +164,7 @@ export class BgrpTaskComponent {
                 this_.message.success(result.MSG);
                 this_.queryRowData();
             }else if(result.CODE === "20001"){
-                this_.message.error(result.MSG);
+                this_.message.error(result.DATA);
             }else{
                 this_.message.error(result.MSG);
             }
@@ -246,7 +200,7 @@ export class BgrpTaskComponent {
                 this_.message.success(result.MSG);
                 this_.queryRowData();
             }else if(result.CODE === "20001"){
-                this_.message.error(result.MSG);
+                this_.message.error(result.DATA);
             }else{
                 this_.message.error(result.MSG);
             }

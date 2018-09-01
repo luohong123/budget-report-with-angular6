@@ -5,13 +5,15 @@ import { TableComponent } from './components/table/table.component';
 import { HomeComponent } from './components/home/home.component';
 import { BgrpTaskComponent } from 'src/app/components/task/task.compontent';
 import { BgrpFormatComponent } from 'src/app/components/format/format.compontent';
+import { FileTemplateComponent } from 'src/app/components/file-template/file-template.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent},
   { path: 'table', component: TableComponent },
   { path: 'task', component: BgrpTaskComponent },
-  { path: 'format', component: BgrpFormatComponent }
+  { path: 'format', component: BgrpFormatComponent },
+  { path: 'file-template', component: FileTemplateComponent }
 ];
 @NgModule({
   imports: [

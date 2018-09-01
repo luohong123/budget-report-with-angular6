@@ -17,4 +17,7 @@ export class BgrpFormatService   {
   deleteOne(param: any){
     return this.daoService.postFromApi('BUDGET/BG_RP_FORMAT/delete',param)
   }
+  queryAttr(param: any){
+    return this.daoService.postFromApi('BUDGET/BG_RP_FORMAT/queryAttr',param);
+  }
 }
