@@ -17,6 +17,9 @@ export class FileTemplateComponent implements OnInit {
   listOfOption: any[] = [];
   TASKID: String = "";
 
+  isVisible = false;
+  chooseDeleteParam: any;
+
   rpListOption: any = {
     // 是否显示工具栏
     showToolPanel: true,
@@ -124,8 +127,8 @@ export class FileTemplateComponent implements OnInit {
             case 'design':
                 break;
             case 'remove':
-                // this.chooseDeleteParam = event.param;
-                // this.isVisible = true;
+                this.chooseDeleteParam = event.param;
+                this.isVisible = true;
                 break;
             default:
                 break;
@@ -204,6 +207,29 @@ export class FileTemplateComponent implements OnInit {
     updateData(param: any): void{
         const this_ = this;
         this.mainService.insertOrUpdate(param).subscribe(result => {
+            if(result.CODE === "0"){
+                this_.message.success(result.MSG);
+                //刷新列表数据
+                this_.queryRowData();
+            }else{
+                this_.message.error(result.MSG);
+            }
+        })
+    }
+    /**
+     * 删除数据
+     */
+    handleOk(){
+        this.deleteOne(this.chooseDeleteParam);
+        this.isVisible = false;
+    }
+     /**
+     * 
+     * @param param 新增修改调用后台接口
+     */
+    deleteOne(param: any): void{
+        const this_ = this;
+        this.mainService.deleteOne(param).subscribe(result => {
             if(result.CODE === "0"){
                 this_.message.success(result.MSG);
                 //刷新列表数据

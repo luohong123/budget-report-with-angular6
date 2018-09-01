@@ -16,3 +16,6 @@
     <rpListdata (rpEvent)="listToolEvent($event)" [rpListOption]="rpListOption" [listdata] = "data"></rpListdata>
   </div>
 </div>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="提示" nzContent="确定删除该条数据吗?" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+</nz-modal>
