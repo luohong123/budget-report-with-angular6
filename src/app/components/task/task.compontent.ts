@@ -10,13 +10,13 @@ import { TaskModalComponent } from './task_modal.compontent';
     styleUrls: [`./task.compontent.css`]
 })
 export class BgrpTaskComponent {
-    
+
     taskCode_filter: any = "";
     taskName_filter: any = "";
 
     isVisible = false;
     chooseDeleteParam: any;
-    
+
     rpListOption: any = {
         // 是否显示工具栏
         showToolPanel: true,
@@ -53,21 +53,21 @@ export class BgrpTaskComponent {
     //列表数据
     data: any[] = [];
 
-    constructor(public mainService: BgrpTaskService, public router: Router, public activedRoute: ActivatedRoute, 
-        private modalService: NzModalService,private message: NzMessageService) {
+    constructor(public mainService: BgrpTaskService, public router: Router, public activedRoute: ActivatedRoute,
+        private modalService: NzModalService, private message: NzMessageService) {
 
         this.queryRowData();
     }
     /**
      * 查询按钮事件
      */
-    searchElement(){
+    searchElement() {
         this.queryRowData();
     }
     /**
      * 重置按钮事件
      */
-    cleanSelect(){
+    cleanSelect() {
         this.taskCode_filter = '';
         this.taskName_filter = '';
         this.queryRowData();
@@ -76,7 +76,7 @@ export class BgrpTaskComponent {
     /**
      * 新增
      */
-    listAdd(){
+    listAdd() {
         this.showModalForComponent("");
     }
     /**
@@ -85,8 +85,8 @@ export class BgrpTaskComponent {
     queryRowData(): any {
         this.data = [];
         const params = {
-            STASKCODE : this.taskCode_filter,
-            STASKNAME : this.taskName_filter
+            STASKCODE: this.taskCode_filter,
+            STASKNAME: this.taskName_filter
         }
         const array = [];
         this.mainService.queryData(params).subscribe(result => {
@@ -96,13 +96,13 @@ export class BgrpTaskComponent {
             this.data = array;
         });
     }
-    showModalForComponent(param: string): void{
+    showModalForComponent(param: string): void {
         const this_ = this;
         const modal = this.modalService.create({
             nzTitle: '报表任务编辑',
+            nzWidth: '50%',
             nzContent: TaskModalComponent,
             nzOnOk(event) {
-                //console.log(event);
                 this_.insertOrUpdate(event);
             },
             nzOnCancel() {
@@ -111,44 +111,44 @@ export class BgrpTaskComponent {
                 param: param
             }
         });
-      
+
     }
 
-     /**
-     * @description 编辑弹窗
-     */
+    /**
+    * @description 编辑弹窗
+    */
     //showModalForComponent(param: string) {
-        // let this_ = this;
-        // const subscription = this.modalService.open({
-        //     title: '报表格式编辑',
-        //     content: TaskModalComponent,
-        //     onOk() {
-        //     },
-        //     onCancel() {
-        //     },
-        //     footer: false,
-        //     componentParams: {
-        //         param: param
-        //     }
-        // });
-        // subscription.subscribe(result => {
-        //     try {
-        //         result=JSON.parse(result);
-        //         this_.insertOrUpdate(result);
-        //     } catch(e) {
-        //     }
-        // })
+    // let this_ = this;
+    // const subscription = this.modalService.open({
+    //     title: '报表格式编辑',
+    //     content: TaskModalComponent,
+    //     onOk() {
+    //     },
+    //     onCancel() {
+    //     },
+    //     footer: false,
+    //     componentParams: {
+    //         param: param
+    //     }
+    // });
+    // subscription.subscribe(result => {
+    //     try {
+    //         result=JSON.parse(result);
+    //         this_.insertOrUpdate(result);
+    //     } catch(e) {
+    //     }
+    // })
     //}
-   
+
     /**
      * 判断参数是否是json格式
      * @param str 
      */
-    isJSON(str: any): Boolean {    
+    isJSON(str: any): Boolean {
         try {
-            var obj=JSON.parse(str);
+            var obj = JSON.parse(str);
             return true;
-        } catch(e) {
+        } catch (e) {
             return false;
         }
     }
@@ -157,15 +157,15 @@ export class BgrpTaskComponent {
      * 
      * @param param 新增修改调用后台接口
      */
-    insertOrUpdate(param: any){
+    insertOrUpdate(param: any) {
         let this_ = this;
         this.mainService.insertOrUpdate(param).subscribe(result => {
-            if(result.CODE === "0"){
+            if (result.CODE === "0") {
                 this_.message.success(result.MSG);
                 this_.queryRowData();
-            }else if(result.CODE === "20001"){
+            } else if (result.CODE === "20001") {
                 this_.message.error(result.DATA);
-            }else{
+            } else {
                 this_.message.error(result.MSG);
             }
         })
@@ -189,19 +189,19 @@ export class BgrpTaskComponent {
                 break;
         }
     }
-     /**
-     * 
-     * @param param 新增修改调用后台接口
-     */
-    deleteOne(param: any){
+    /**
+    * 
+    * @param param 新增修改调用后台接口
+    */
+    deleteOne(param: any) {
         const this_ = this;
         this.mainService.deleteOne(param).subscribe(result => {
-            if(result.CODE === "0"){
+            if (result.CODE === "0") {
                 this_.message.success(result.MSG);
                 this_.queryRowData();
-            }else if(result.CODE === "20001"){
+            } else if (result.CODE === "20001") {
                 this_.message.error(result.DATA);
-            }else{
+            } else {
                 this_.message.error(result.MSG);
             }
         })

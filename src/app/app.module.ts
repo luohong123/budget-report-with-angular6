@@ -27,6 +27,8 @@ import { BgrpFileTemplateService } from 'src/app/services/file-template.service'
 import { FileTemplateAddModalComponent } from 'src/app/components/file-template/file-template-modal/file-template-modal-add.component';
 import { FileTemplateEditModalComponent } from 'src/app/components/file-template/file-template-modal/file-template-modal-edit.component';
 import { FormatEditModalComponent } from 'src/app/components/format/format-modal/format_modal_eidt.component';
+import { CatalogComponent } from './components/catalog/catalog.component';
+import { CatalogAddComponent } from './components/catalog/catalog-add.compoent';
 
 registerLocaleData(zh);
 
@@ -38,6 +40,7 @@ registerLocaleData(zh);
     FileTemplateAddModalComponent,
     FileTemplateEditModalComponent,
     FormatEditModalComponent,
+    CatalogAddComponent
   ],
   declarations: [
     AppComponent,
@@ -53,6 +56,8 @@ registerLocaleData(zh);
     FileTemplateAddModalComponent,
     FileTemplateEditModalComponent,
     FormatEditModalComponent,
+    CatalogComponent,
+    CatalogAddComponent
   ],
   imports: [
     BrowserModule,

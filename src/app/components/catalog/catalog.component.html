@@ -1,0 +1,36 @@
+<div>
+  <div nz-col nzSpan="8">
+    <nz-input-group [nzSuffix]="suffixIcon">
+      <input type="text" nz-input placeholder="Search Tree Node" [(ngModel)]="searchValue">
+    </nz-input-group>
+    <ng-template #suffixIcon>
+      <i class="anticon anticon-search"></i>
+    </ng-template>
+    <nz-tree [(ngModel)]="nodes" [nzSearchValue]="searchValue" [nzShowExpand]="true" 
+      (nzOnDragStart)="dragStart($event)" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)">
+      <ng-template #contextTemplate>
+        <ul nz-menu nzInDropDown>
+          <li nz-menu-item (click)="selectDropdown('add',$event)">新建文件夹</li>
+          <li nz-menu-item (click)="selectDropdown('remove',$event)">移除文件夹</li>
+        </ul>
+      </ng-template>
+      <ng-template #nzTreeTemplate let-node>
+        <span class="custom-node" draggable="true" aria-grabbed="true" [class.active]="activedNode?.key===node.key">
+          <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading" (contextmenu)="contextMenu($event,contextTemplate, node)">
+            <i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>
+            <i class="anticon anticon-folder-open" *ngIf="node.isExpanded" (click)="openFolder(node)"></i>
+            <span class="folder-name">{{node.title}}</span>
+            <!-- <span class="folder-desc">{{node?.origin?.author | lowercase}} created at 2018-04-01</span> -->
+          </span>
+          <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate, node)">
+            <i class="anticon anticon-folder"></i>
+            <span class="file-name">{{node.title}}</span>
+            <!-- <span class="file-desc">{{node?.origin?.author | lowercase}} modified at 2018-05-01</span> -->
+          </span>
+        </span>
+      </ng-template>
+    </nz-tree>
+  </div>
+</div>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="提示" nzContent="确定删除该条数据吗?" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  </nz-modal>
