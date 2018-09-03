@@ -1,13 +1,15 @@
-<div>
-  <div nz-col nzSpan="8">
-    <nz-input-group [nzSuffix]="suffixIcon">
-      <input type="text" nz-input placeholder="Search Tree Node" [(ngModel)]="searchValue">
-    </nz-input-group>
-    <ng-template #suffixIcon>
-      <i class="anticon anticon-search"></i>
-    </ng-template>
-    <nz-tree [(ngModel)]="nodes" [nzSearchValue]="searchValue" [nzShowExpand]="true" 
-      (nzOnDragStart)="dragStart($event)" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)">
+<div class="full">
+  <div class="left_tree" nz-col nzSpan="6">
+    <div class="search-input">
+      <nz-input-group [nzSuffix]="suffixIcon">
+        <input type="text" nz-input placeholder="请输入" [(ngModel)]="searchValue">
+      </nz-input-group>
+      <ng-template #suffixIcon>
+        <i class="anticon anticon-search"></i>
+      </ng-template>
+  </div>
+    <nz-tree [(ngModel)]="nodes" [nzSearchValue]="searchValue" [nzShowExpand]="true" (nzOnDragStart)="dragStart($event)" (nzClick)="activeNode($event)"
+      (nzDblClick)="openFolder($event)">
       <ng-template #contextTemplate>
         <ul nz-menu nzInDropDown>
           <li nz-menu-item (click)="selectDropdown('add',$event)">新建文件夹</li>
@@ -31,6 +33,41 @@
       </ng-template>
     </nz-tree>
   </div>
+  <div class="right-conrent" nz-col nzSpan="18">
+    <div class="btn-tool">
+        <div class="btns">
+            <button nz-button nzType="default" (click)="listAdd()">新建</button>
+            <button nz-button nzType="default" (click)="listAdd()">目录</button>
+            <button nz-button nzType="default" (click)="listAdd()">文件</button>
+          </div>
+            <div class="select_search">
+                <nz-input-group [nzSuffix]="suffixIcon">
+                    <input type="text" nz-input placeholder="请输入" [(ngModel)]="searchValue">
+                  </nz-input-group>
+                  <ng-template #suffixIcon>
+                    <i class="anticon anticon-search"></i>
+                  </ng-template>
+          </div>
+    </div>
+    <nz-list style="cursor: pointer;" [nzDataSource]="listData" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" (dbclick)="dbclick(event)">
+      <ng-template #item let-item>
+        <nz-list-item [nzContent]="''" [nzActions]="[editAction,moreAction]">
+          <ng-template #editAction>
+            <a (click)="edit(item)">打开</a>
+          </ng-template>
+          <ng-template #moreAction>
+            <a (click)="edit(item)">更多</a>
+          </ng-template>
+          <nz-list-item-meta [nzTitle]="nzTitle" [nzAvatar]="item.flag ? '../../assets/img/file.png' : '../../assets/img/folder.png' "
+            [nzDescription]="item.content">
+            <ng-template #nzTitle>
+              <a>{{item.title}}</a>
+            </ng-template>
+          </nz-list-item-meta>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+  </div>
 </div>
 <nz-modal [(nzVisible)]="isVisible" nzTitle="提示" nzContent="确定删除该条数据吗?" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-  </nz-modal>
+</nz-modal>

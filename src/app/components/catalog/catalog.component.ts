@@ -1,117 +1,25 @@
 import { Component, HostListener, OnInit, TemplateRef } from '@angular/core';
-import { NzDropdownService, NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent, NzModalService } from 'ng-zorro-antd';
+import { NzDropdownService, NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { CatalogAddComponent } from './catalog-add.compoent';
+import { HttpClient } from '@angular/common/http';
+import { CatalogService } from 'src/app/services/catalog.services';
 
 @Component({
   selector: 'rp-catalog',
   templateUrl: './catalog.component.html',
-  styles: [`
-    :host ::ng-deep .ant-tree {
-      overflow: hidden;
-      margin: 0 -24px;
-      padding: 0 24px;
-    }
-
-    :host ::ng-deep .ant-tree li {
-      padding: 4px 0 0 0;
-    }
-
-    @keyframes shine {
-      0% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.5;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-
-    .shine-animate {
-      animation: shine 2s ease infinite;
-    }
-
-    .custom-node {
-      cursor: pointer;
-      line-height: 26px;
-      margin-left: 4px;
-      display: inline-block;
-      margin: 0 -1000px;
-      padding: 0 1000px;
-    }
-
-    .active {
-      background: #1890FF;
-      color: #fff;
-    }
-
-    .is-dragging {
-      background-color: transparent !important;
-      color: #000;
-      opacity: 0.7;
-    }
-
-    .file-name, .folder-name, .file-desc, .folder-desc {
-      margin-left: 4px;
-    }
-
-    .file-desc, .folder-desc {
-      padding: 2px 8px;
-      background: #87CEFF;
-      color: #FFFFFF;
-    }
-  ` ]
+  styleUrls: [`./catalog.component.css`]
 })
 export class CatalogComponent implements OnInit {
+  data: any[] = [];
+  loading = false;
+  hasMore = true;
+
   dropdown: NzDropdownContextComponent;
   // can active only one node
   activedNode: NzTreeNode;
   dragNodeElement;
   isVisible = false;
   nodes = [
-    new NzTreeNode({
-      title: '预算报表',
-      key: '1001',
-      // author: 'ANGULAR',
-      expanded: true,
-      children: [
-        {
-          title: '目录 1',
-          key: '10001',
-          author: 'ZORRO',
-          children: [
-            {
-              title: '目录 1.1',
-              key: '100011',
-              // author: 'ZORRO',
-              children: []
-            },
-            {
-              title: '目录 1.2',
-              key: '100012',
-              author: 'ZORRO',
-              children: [
-                {
-                  title: '目录 1.2.1',
-                  key: '1000121',
-                  // author: 'ZORRO-FANS',
-                  isLeaf: true,
-                  // checked: true,
-                  // disabled: true
-                },
-                {
-                  title: '目录 1.2.2',
-                  key: '1000122',
-                  // author: 'ZORRO-FANS',
-                  isLeaf: true
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    })
   ];
 
   @HostListener('mouseleave', ['$event'])
@@ -234,56 +142,132 @@ export class CatalogComponent implements OnInit {
   handleOk() {
     
     this.nodes = [
-      new NzTreeNode({
-        title: '预算报表',
-        key: '1001',
-        // author: 'ANGULAR',
-        expanded: true,
-        children: [
-          {
-            title: '目录 1',
-            key: '10001',
-            author: 'ZORRO',
-            children: [
-              {
-                title: '目录 1.1',
-                key: '100011',
-                // author: 'ZORRO',
-                children: []
-              },
-              {
-                title: '目录 1.2',
-                key: '100012',
-                author: 'ZORRO',
-                children: [
-                  {
-                    title: '目录 1.2.1',
-                    key: '1000121',
-                    // author: 'ZORRO-FANS',
-                    isLeaf: true,
-                    // checked: true,
-                    // disabled: true
-                  },
-                  {
-                    title: '目录 1.2.2',
-                    key: '1000122',
-                    // author: 'ZORRO-FANS',
-                    isLeaf: true
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      })
+      // new NzTreeNode({
+      //   title: '预算报表',
+      //   key: '1001',
+      //   // author: 'ANGULAR',
+      //   expanded: true,
+      //   children: [
+      //     {
+      //       title: '目录 1',
+      //       key: '10001',
+      //       author: 'ZORRO',
+      //       children: [
+      //         {
+      //           title: '目录 1.1',
+      //           key: '100011',
+      //           // author: 'ZORRO',
+      //           children: []
+      //         },
+      //         {
+      //           title: '目录 1.2',
+      //           key: '100012',
+      //           author: 'ZORRO',
+      //           children: [
+      //             {
+      //               title: '目录 1.2.1',
+      //               key: '1000121',
+      //               // author: 'ZORRO-FANS',
+      //               isLeaf: true,
+      //               // checked: true,
+      //               // disabled: true
+      //             },
+      //             {
+      //               title: '目录 1.2.2',
+      //               key: '1000122',
+      //               // author: 'ZORRO-FANS',
+      //               isLeaf: true
+      //             }
+      //           ]
+      //         }
+      //       ]
+      //     }
+      //   ]
+      // })
     ];  
     this.isVisible = false;
   }
 
-  constructor(private nzDropdownService: NzDropdownService, private modalService: NzModalService) {
+  constructor(private mainService: CatalogService, private nzDropdownService: NzDropdownService, private modalService: NzModalService,private http: HttpClient, private msg: NzMessageService) {
   }
-
+//右侧数据
+listData=[
+  {
+    title: '目录 1',
+    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+    flag: true,
+    
+  },
+  {
+    title: '目录 2',
+    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+    flag: false,
+    
+  },
+  {
+    title: '目录 3',
+    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+    flag: true,
+    
+  },
+  {
+    title: '目录 4',
+    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+    flag: true,
+    
+  },
+  {
+    title: '目录 5',
+    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+    flag: false,
+    
+  },
+  {
+    title: '目录 6',
+    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+    flag: true,
+    
+  },
+  {
+    title: '目录 7',
+    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+    flag: false,
+    
+  }
+]
   ngOnInit(): void {
+    const this_ = this;
+    let node = [];
+    this.mainService.queryCatalogTree().subscribe(result=>{
+      // console.log(this_.nodes[0].children);
+      // console.log(result.DATA);
+      this_.nodes.push( new NzTreeNode(result.DATA));
+      // console.log(node);
+      // console.log(this_.nodes);
+    })
+    // this.getData((res: any) => this.data = res.results);
 
+    
+  }
+  // list双击事件
+  dbclick(event){
+   alert(event.title)
+  }
+  // getData(callback: (res: any) => void): void {
+  //   this.http.get(fakeDataUrl).subscribe((res: any) => callback(res));
+  // }
+  onScroll(): void {
+    if (this.loading) return;
+    this.loading = true;
+    if (this.data.length > 14) {
+      this.msg.warning('Infinite List loaded all');
+      this.hasMore = false;
+      this.loading = false;
+      return;
+    }
+    // this.getData((res: any) => {
+    //   this.data = this.data.concat(res.results);
+    //   this.loading = false;
+    // });
   }
 }

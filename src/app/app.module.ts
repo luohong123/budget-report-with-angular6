@@ -29,6 +29,8 @@ import { FileTemplateEditModalComponent } from 'src/app/components/file-template
 import { FormatEditModalComponent } from 'src/app/components/format/format-modal/format_modal_eidt.component';
 import { CatalogComponent } from './components/catalog/catalog.component';
 import { CatalogAddComponent } from './components/catalog/catalog-add.compoent';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CatalogService } from 'src/app/services/catalog.services';
 
 registerLocaleData(zh);
 
@@ -68,10 +70,12 @@ registerLocaleData(zh);
     AppRoutingModule,
     FccoreModule,
     FccomponentModule,
+    ReactiveFormsModule
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},
     BgrpTaskService,
     BgrpFormatService,
+    CatalogService,
     NzModalService,
     BgrpFileTemplateService
   ],
