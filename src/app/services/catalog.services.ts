@@ -9,5 +9,7 @@ export class CatalogService {
   queryCatalogTree() {
     return this.daoService.postFromApi('BUDGET/BG_RP_CATALOG/queryCatalogTree', '');
   }
-
+  addCatalogNode(param) {
+    return this.daoService.postFromApi('BUDGET/BG_RP_CATALOG/addCatalogNode', param);
+  }
 }
