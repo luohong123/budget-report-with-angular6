@@ -1,5 +1,9 @@
 {
     "/server": {
+<<<<<<< Updated upstream
         "target": "http://192.168.0.120:8080/"
+=======
+        "target": "http://localhost:8080/"
+>>>>>>> Stashed changes
     }
 }

@@ -12,4 +12,7 @@ export class CatalogService {
   addCatalogNode(param) {
     return this.daoService.postFromApi('BUDGET/BG_RP_CATALOG/addCatalogNode', param);
   }
+  removeCatalogNode(param) {
+    return this.daoService.postFromApi('BUDGET/BG_RP_CATALOG/removeCatalogNode', param);
+  }
 }

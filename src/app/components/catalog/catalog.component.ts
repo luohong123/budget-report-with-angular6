@@ -127,7 +127,6 @@ export class CatalogComponent implements OnInit {
           nzOnOk(componentParam) {
             // 调取后台新增节点接口
             this_.addCatalogNode(componentParam);
-            console.log(componentParam);
           },
           nzOnCancel(componentParam) {
           },
@@ -142,7 +141,12 @@ export class CatalogComponent implements OnInit {
       case 'edit':
         break;
       case 'remove':
+        if (this.activedNode.title === '预算报表') {
+          this.msg.error('根目录禁止删除!');
+          break;
+        }
         this.isVisible = true;
+
         break;
       default:
         break;
@@ -150,12 +154,37 @@ export class CatalogComponent implements OnInit {
     this.dropdown.close();
   }
   /**
-   * 删除数据
+   * 删除菜单节点
    */
   handleOk() {
-
-    this.nodes = [];
     this.isVisible = false;
+    const this_ = this;
+    const level = this_.activedNode.level;
+    const key = this.activedNode.key;
+    const nodeChildren: any[] = this.nodes[0].children;
+    this.mainService.removeCatalogNode({ID : this.activedNode.key}).subscribe(result => {
+      if (result.CODE === '0') {
+        this_.msg.success(result.MSG);
+        this.findRemoveNode(nodeChildren, key);
+      } else {
+        this_.msg.error(result.MSG);
+      }
+    });
+  }
+  /**
+   * 递归查找删除的节点并删除
+   * @param nodeChildren 当前节点的子节点
+   * @param key 要删除节点的key
+   */
+  findRemoveNode(nodeChildren: any, key: String): void {
+    for ( let i = 0; i < nodeChildren.length; i ++ ) {
+      if (nodeChildren[i].key === key) {
+        nodeChildren.splice(i, 1);
+        break;
+      } else {
+        this.findRemoveNode(nodeChildren[i].children, key);
+      }
+    }
   }
 
   constructor(private mainService: CatalogService, private nzDropdownService: NzDropdownService,
