@@ -138,6 +138,7 @@ export class CatalogComponent implements OnInit {
   }
 
   selectDropdown(eventName: string, event): void {
+    const this_ = this;
     switch (eventName) {
       case 'add':
         const node = this.activedNode;
@@ -146,13 +147,9 @@ export class CatalogComponent implements OnInit {
           nzContent: CatalogAddComponent,
           nzMaskClosable: false,
           nzOnOk(componentParam) {
+            // 调取后台新增节点接口
+            this_.addCatalogNode(componentParam);
             console.log(componentParam);
-            node.isLeaf = false;
-            node.addChildren([{
-              title: componentParam.name,
-              key: (new Date()).getTime(),
-              isLeaf: true
-            }]);
           },
           nzOnCancel(componentParam) {
           },
@@ -216,5 +213,33 @@ export class CatalogComponent implements OnInit {
     //   this.data = this.data.concat(res.results);
     //   this.loading = false;
     // });
+  }
+
+  /**
+   * 添加新菜单节点
+   * @param componentParam
+   */
+  addCatalogNode(componentParam: any): void {
+    const this_ = this;
+    const node = this.activedNode;
+    const param = {
+      NAME : componentParam.name,
+      ID : componentParam.node.key,
+      PATH : componentParam.node.spath
+    };
+    this.mainService.addCatalogNode(param).subscribe(result => {
+      if (result.CODE === '0') {
+        this_.msg.success(result.MSG);
+        // 添加节点
+        node.isLeaf = false;
+        node.addChildren([{
+          title: componentParam.name,
+          key: result.DATA,
+          isLeaf: true
+        }]);
+      }  else {
+        this_.msg.error(result.MSG);
+      }
+    });
   }
 }
