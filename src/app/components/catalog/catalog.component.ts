@@ -23,23 +23,9 @@ export class CatalogComponent implements OnInit {
   activedNode: NzTreeNode;
   dragNodeElement;
   isVisible = false;
-  nodes = [
-  ];
+  nodes = [];
   // 右侧数据
-  listData: CatalogListItem[] = [
-    {
-      Title: '目录',
-      Type: 'file',
-      Description: '这是一段描述',
-      ID: '1'
-    },
-    {
-      Title: '目录2',
-      Type: 'folder',
-      Description: '这是一段描述',
-      ID: '1'
-    }
-  ];
+  listData: CatalogListItem[] = [];
 
   @HostListener('mouseleave', ['$event'])
   mouseLeave(event: MouseEvent): void {
@@ -99,6 +85,9 @@ export class CatalogComponent implements OnInit {
     }
     data.node.isSelected = true;
     this.activedNode = data.node;
+
+    // 查询当前目录下的文件
+    this.queryCatalogAndINS(data.node.key);
   }
 
   dragStart(event: NzFormatEmitEvent): void {
@@ -196,10 +185,19 @@ export class CatalogComponent implements OnInit {
     this.mainService.queryCatalogTree().subscribe(result => {
       this_.nodes.push(new NzTreeNode(result.DATA));
     });
+    this.queryCatalogAndINS('0');
   }
   // list双击事件
   dbclick(event) {
+    console.log(event);
   }
+  /**
+   * list单击事件
+   */
+  fileListClick(event: any): void {
+    console.log(event);
+  }
+
   onScroll(): void {
     if (this.loading) { return; }
     this.loading = true;
@@ -235,6 +233,13 @@ export class CatalogComponent implements OnInit {
         }]);
       }  else {
         this_.msg.error(result.MSG);
+      }
+    });
+  }
+  queryCatalogAndINS(id: String): void {
+    this.mainService.queryCatalogAndINS({ID : id}).subscribe(result => {
+      if (result.CODE === '0') {
+        this.listData = result.DATA;
       }
     });
   }

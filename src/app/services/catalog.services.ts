@@ -15,4 +15,7 @@ export class CatalogService {
   removeCatalogNode(param) {
     return this.daoService.postFromApi('BUDGET/BG_RP_CATALOG/removeCatalogNode', param);
   }
+  queryCatalogAndINS(param) {
+    return this.daoService.postFromApi('BUDGET/BG_RP_CATALOG/queryCatalogAndINS', param);
+  }
 }

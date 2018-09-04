@@ -50,7 +50,7 @@
       </div>
     </div>
     <nz-list style="cursor: pointer;" [nzDataSource]="listData|catalogListDataFilter:'all':listSearchValue" [nzRenderItem]="item" [nzItemLayout]="'horizontal'"
-      (dbclick)="dbclick(event)">
+      (dbclick)="dbclick($event)">
       <ng-template #item let-item>
         <nz-list-item [nzContent]="''">
           <!-- [nzActions]="[editAction,moreAction]" -->
@@ -63,7 +63,7 @@
           <nz-list-item-meta [nzTitle]="nzTitle" [nzAvatar]="item.Type ==='file' ? '../../assets/img/file.png' : '../../assets/img/folder.png' "
             [nzDescription]="item.content">
             <ng-template #nzTitle>
-              <a>{{item.Title}}</a>
+              <a (click)="fileListClick(item)">{{item.Title}}</a>
             </ng-template>
           </nz-list-item-meta>
         </nz-list-item>
