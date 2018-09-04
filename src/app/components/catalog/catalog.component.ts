@@ -6,6 +6,7 @@ import {
 import { CatalogAddComponent } from './catalog-add.compoent';
 import { HttpClient } from '@angular/common/http';
 import { CatalogService } from 'src/app/services/catalog.services';
+import { CatalogListItem } from 'src/app/interface/report.interface';
 
 @Component({
   selector: 'rp-catalog',
@@ -25,44 +26,21 @@ export class CatalogComponent implements OnInit {
   nodes = [
   ];
   // 右侧数据
-  listData = [
+  listData: CatalogListItem[] = [
     {
-      title: '目录 1',
-      content: `文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。
-      使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能`,
-      flag: true,
+      Title: '目录',
+      Type: 'file',
+      Description: '这是一段描述',
+      ID: '1'
     },
     {
-      title: '目录 2',
-      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-      flag: false,
-    },
-    {
-      title: '目录 3',
-      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-      flag: true,
-    },
-    {
-      title: '目录 4',
-      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-      flag: true,
-    },
-    {
-      title: '目录 5',
-      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-      flag: false,
-    },
-    {
-      title: '目录 6',
-      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-      flag: true,
-    },
-    {
-      title: '目录 7',
-      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-      flag: false,
+      Title: '目录2',
+      Type: 'folder',
+      Description: '这是一段描述',
+      ID: '1'
     }
   ];
+
   @HostListener('mouseleave', ['$event'])
   mouseLeave(event: MouseEvent): void {
     event.preventDefault();
@@ -173,9 +151,6 @@ export class CatalogComponent implements OnInit {
         break;
     }
     this.dropdown.close();
-    // do something
-    console.log('dropdown clicked ' + eventName);
-    console.log(this.activedNode);
   }
   /**
    * 删除数据
@@ -196,13 +171,9 @@ export class CatalogComponent implements OnInit {
       this_.nodes.push(new NzTreeNode(result.DATA));
     });
   }
-
   // list双击事件
   dbclick(event) {
   }
-  // getData(callback: (res: any) => void): void {
-  //   this.http.get(fakeDataUrl).subscribe((res: any) => callback(res));
-  // }
   onScroll(): void {
     if (this.loading) { return; }
     this.loading = true;
@@ -212,9 +183,6 @@ export class CatalogComponent implements OnInit {
       this.loading = false;
       return;
     }
-    // this.getData((res: any) => {
-    //   this.data = this.data.concat(res.results);
-    //   this.loading = false;
-    // });
   }
 }
+
