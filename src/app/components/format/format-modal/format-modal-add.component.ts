@@ -6,7 +6,7 @@ import { BgrpFormatService } from 'src/app/services/format.service';
  * 新增报表格式页面
  */
 @Component({
-  selector: 'bgrp-format-modal',
+  selector: 'rp-format-modal-add',
   template: `
     <nz-steps [nzCurrent]="current">
       <nz-step nzTitle="填写基础信息"></nz-step>
@@ -50,14 +50,18 @@ import { BgrpFormatService } from 'src/app/services/format.service';
     <div class="steps-content" *ngIf="current === 1">
       <div class="form-control clearfix">
         <label>表头属性:</label>
-        <nz-select class="form-right" [(ngModel)]='H' name="H" nzPlaceHolder="请选择" nzMode="tags" (ngModelChange)="selectChange('disH',$event)">
-          <nz-option *ngFor="let option of attrList" [nzLabel]="option.SDIM_NAME" [nzValue]="option.SDIM_CODE" [nzDisabled]="option.disH"></nz-option>
+        <nz-select class="form-right" [(ngModel)]='H' name="H" nzPlaceHolder="请选择"
+         nzMode="tags" (ngModelChange)="selectChange('disH',$event)">
+          <nz-option *ngFor="let option of attrList" [nzLabel]="option.SDIM_NAME"
+           [nzValue]="option.SDIM_CODE" [nzDisabled]="option.disH"></nz-option>
         </nz-select>
       </div>
       <div class="form-control clearfix">
         <label>数据属性:</label>
-        <nz-select class="form-right" [(ngModel)]='D' name="D" nzPlaceHolder="请选择" nzMode="tags" (ngModelChange)="selectChange('disD',$event)">
-          <nz-option *ngFor="let option of attrList" [nzLabel]="option.SDIM_NAME" [nzValue]="option.SDIM_CODE" [nzDisabled]="option.disD"></nz-option>
+        <nz-select class="form-right" [(ngModel)]='D' name="D"
+         nzPlaceHolder="请选择" nzMode="tags" (ngModelChange)="selectChange('disD',$event)">
+          <nz-option *ngFor="let option of attrList"
+           [nzLabel]="option.SDIM_NAME" [nzValue]="option.SDIM_CODE" [nzDisabled]="option.disD"></nz-option>
         </nz-select>
       </div>
     </div>
@@ -70,7 +74,7 @@ import { BgrpFormatService } from 'src/app/services/format.service';
         </dt>
         <dd>操作成功，请绘制格式</dd>
     </dl>
-    <div class="form-controls"> 
+    <div class="form-controls">
       <div class="form-control form-control3">
         <label>报表编码:</label>
         <span class="form-right">{{SCODE}}</span>
@@ -105,7 +109,7 @@ import { BgrpFormatService } from 'src/app/services/format.service';
     </div>
   `,
   styles: [
-    ` .clearfix{clear:both;}   
+    ` .clearfix{clear:both;}
       .steps-content {
         height:auto;
         margin-top: 16px;
@@ -152,7 +156,7 @@ export class FormatAddModalComponent {
   set param(value: any) {
     this.STASKNAME = value.STASKNAME;
     this.STASKID = value.ID;
-    //查询头属性和数据属性
+    // 查询头属性和数据属性
     this.queryAttr();
   }
 
@@ -162,16 +166,16 @@ export class FormatAddModalComponent {
 
   next(): void {
     const this_ = this;
-    if(this.current === 1){
-      //点击下一步前,将数据保存
-      this.insertData().subscribe(result=>{
-        if(result.CODE === '0'){
+    if (this.current === 1) {
+      // 点击下一步前,将数据保存
+      this.insertData().subscribe(result => {
+        if (result.CODE === '0') {
           this.current += 1;
-        }else{
+        } else {
           this_.message.error(result.MSG);
         }
-      })
-    }else{
+      });
+    } else {
       this.current += 1;
     }
   }
@@ -186,7 +190,7 @@ export class FormatAddModalComponent {
   }
 
 
-  constructor(private modal: NzModalRef,public mainService: BgrpFormatService,private message: NzMessageService) {
+  constructor(private modal: NzModalRef, public mainService: BgrpFormatService, private message: NzMessageService) {
   }
 
 
@@ -197,40 +201,39 @@ export class FormatAddModalComponent {
       SUNIT: this.SUNIT,
       SDES: this.SDES,
       STASKID: this.STASKID,
-    }
-
+    };
     return this.mainService.insertOrUpdate(param);
   }
 
   queryAttr(): void {
     const this_ = this;
-    this.mainService.queryAttr("").subscribe(result =>{
-      if(result.CODE === '0'){
+    this.mainService.queryAttr('').subscribe(result => {
+      if (result.CODE === '0') {
         result.DATA.forEach(element => {
           element.disH = false;
           element.disD = false;
           this_.attrList.push(element);
         });
       }
-    })
+    });
 
   }
 
-  selectChange(mark: String , event: any[]): void{
+  selectChange(mark: String, event: any[]): void {
     this.attrList.forEach(i => {
-      if(mark === 'disH'){
-        if(event.indexOf(i.SDIM_CODE) !== -1){
+      if (mark === 'disH') {
+        if (event.indexOf(i.SDIM_CODE) !== -1) {
           i.disD = true;
-        }else {
+        } else {
           i.disD = false;
         }
-      }else if(mark === 'disD'){
-        if(event.indexOf(i.SDIM_CODE) !== -1){
+      } else if (mark === 'disD') {
+        if (event.indexOf(i.SDIM_CODE) !== -1) {
           i.disH = true;
-        }else {
+        } else {
           i.disH = false;
         }
       }
-    })
+    });
   }
 }

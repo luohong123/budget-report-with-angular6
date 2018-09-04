@@ -7,7 +7,7 @@ import { BgrpFileTemplateService } from 'src/app/services/file-template.service'
  * 新增报表格式页面
  */
 @Component({
-  selector: 'file-template-modal-edit',
+  selector: 'rp-file-template-modal-edit',
   template: `
     <div class="steps-content">
       <div class="form-control clearfix">
@@ -74,7 +74,7 @@ export class FileTemplateEditModalComponent {
   NORDER: number;
   STASKNAME: String;
   TASKID: String;
-  
+
   @Input()
   set param(value: any) {
     this.STASKNAME = value.TASK.STASKNAME;

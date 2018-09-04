@@ -26,16 +26,16 @@ export class FileTemplateComponent implements OnInit {
         // 工具栏按钮
         tools: [
             {
-                name: "编辑",
-                code: "edit"
+                name: '编辑',
+                code: 'edit'
             },
             {
-                name: "设计",
-                code: "design"
+                name: '设计',
+                code: 'design'
             },
             {
-                name: "删除",
-                code: "remove"
+                name: '删除',
+                code: 'remove'
             },
         ],
         // 表列头
@@ -55,11 +55,6 @@ export class FileTemplateComponent implements OnInit {
                 field: 'STYPE',
                 menuTabs: []
             },
-            // {
-            //     headerName: '包含格式',
-            //     field: 'D',
-            //     menuTabs: []
-            // },
             {
                 headerName: '格式说明',
                 field: 'SDES',
@@ -76,22 +71,21 @@ export class FileTemplateComponent implements OnInit {
     ngOnInit() {
         const this_ = this;
         this_.taskService.queryData({
-            STASKCODE: "",
-            STASKNAME: ""
+            STASKCODE: '',
+            STASKNAME: ''
         }).subscribe(result => {
             result.DATA.forEach(element => {
                 this_.listOfOption.push(element);
-            })
-            if (this_.TASKID === "") {
+            });
+            if (this_.TASKID === '') {
                 this_.TASKID = this_.listOfOption[0].ID;
             }
 
             this.queryRowData();
-        })
+        });
     }
     /**
      * 根据任务Id查询表格数据
-     * @param e 
      */
     queryRowData(): void {
         this.data = [];
@@ -115,10 +109,10 @@ export class FileTemplateComponent implements OnInit {
      * 新增按钮点击事件
      */
     addClick(): void {
-        //弹出新增对话框
-        this.showAddModal("");
+        // 弹出新增对话框
+        this.showAddModal('');
     }
-    //表格操作按钮事件
+    // 表格操作按钮事件
     listToolEvent(event) {
         switch (event.eventName) {
             case 'edit':
@@ -139,12 +133,12 @@ export class FileTemplateComponent implements OnInit {
      */
     showAddModal(param: string) {
         let task;
-        let this_ = this;
+        const this_ = this;
         this.listOfOption.forEach(element => {
             if (element.ID === this_.TASKID) {
                 task = element;
             }
-        })
+        });
         const modal = this.modalService.create({
             nzTitle: '新建模板',
             nzContent: FileTemplateAddModalComponent,
@@ -153,7 +147,7 @@ export class FileTemplateComponent implements OnInit {
             nzOnOk(componentParam) {
             },
             nzOnCancel(componentParam) {
-                //点击弹框右上角❌,回调事件
+                // 点击弹框右上角❌,回调事件
                 if (componentParam.current === 1) {
                     this_.queryRowData();
                 }
@@ -162,11 +156,11 @@ export class FileTemplateComponent implements OnInit {
                 param: task
             }
         });
-        //当关闭对话框时判断是否已经新增了数据,若已新增则更新表格数据
+        // 当关闭对话框时判断是否已经新增了数据,若已新增则更新表格数据
         modal.afterClose.subscribe((result) => {
             modal.destroy();
             if (result !== undefined && result.data === 'refresh') {
-                //更新表格数据
+                // 更新表格数据
                 this_.queryRowData();
             }
         })
@@ -176,7 +170,7 @@ export class FileTemplateComponent implements OnInit {
      */
     showEidtModal(param: string) {
         let task;
-        let this_ = this;
+        const this_ = this;
         this.listOfOption.forEach(element => {
             if (element.ID === this_.TASKID) {
                 task = element;
@@ -191,7 +185,7 @@ export class FileTemplateComponent implements OnInit {
                     ID: componentParam.ID,
                     SNAME: componentParam.SNAME,
                     SDES: componentParam.SDES,
-                }
+                };
                 this_.updateData(condition);
             },
             nzOnCancel(componentParam) {
@@ -208,9 +202,9 @@ export class FileTemplateComponent implements OnInit {
     updateData(param: any): void {
         const this_ = this;
         this.mainService.insertOrUpdate(param).subscribe(result => {
-            if (result.CODE === "0") {
+            if (result.CODE === '0') {
                 this_.message.success(result.MSG);
-                //刷新列表数据
+                // 刷新列表数据
                 this_.queryRowData();
             } else {
                 this_.message.error(result.MSG);
@@ -231,13 +225,13 @@ export class FileTemplateComponent implements OnInit {
     deleteOne(param: any): void {
         const this_ = this;
         this.mainService.deleteOne(param).subscribe(result => {
-            if (result.CODE === "0") {
+            if (result.CODE === '0') {
                 this_.message.success(result.MSG);
-                //刷新列表数据
+                // 刷新列表数据
                 this_.queryRowData();
             } else {
                 this_.message.error(result.MSG);
             }
-        })
+        });
     }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterContentInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
-    selector: 'rpListdata',
+    selector: 'rp-listdata',
     template: `
     <nz-table #nzTable [nzData]="data" [nzPageSize]="10">
         <thead nz-thead>
@@ -41,21 +41,21 @@ import { Component, OnInit, AfterContentInit, Input, Output, EventEmitter, OnCha
 export class RpListdataComponent implements OnInit, AfterContentInit, OnChanges {
     @Output()
     rpEvent: EventEmitter<Object> = new EventEmitter();
-    
+
     @Input()
     rpListOption: any;
     @Input()
     listdata: any[];
 
     tableField: any[] = [];
-    //表格数据
-    data :any[];
-    
+    // 表格数据
+    data: any[];
+
     constructor() {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if(changes.hasOwnProperty("listdata")){
+        if (changes.hasOwnProperty('listdata')) {
             this.data = changes.listdata.currentValue;
         }
     }

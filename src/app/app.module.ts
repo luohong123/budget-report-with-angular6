@@ -9,24 +9,23 @@ import zh from '@angular/common/locales/zh';
 import { NgZorroAntdModule, NZ_I18N, zh_CN, NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
 import { AppRoutingModule } from './/app-routing.module';
-import { TableComponent } from './components/table/table.component';
 import { HomeComponent } from './components/home/home.component';
 import { BgrpTaskComponent } from 'src/app/components/task/task.compontent';
 import { BgrpFormatComponent } from 'src/app/components/format/format.compontent';
 import {FccomponentModule} from 'fccomponent2';
-import { RpListdataComponent } from 'src/app/components/common/rpListdata.compontent';
+import { RpListdataComponent } from 'src/app/components/common/rp-listdata.compontent';
 import { BgrpTaskService } from 'src/app/services/task.service';
 import { BgrpFormatService } from 'src/app/services/format.service';
 import { TaskModalComponent } from 'src/app/components/task/task_modal.compontent';
 import { LocationStrategy } from '@angular/common';
 import { HashLocationStrategy } from '@angular/common';
 import { FormatModalComponent } from 'src/app/components/format/format-modal/format-modal.component';
-import { FormatAddModalComponent } from 'src/app/components/format/format-modal/format_modal_add.component';
+import { FormatAddModalComponent } from './components/format/format-modal/format-modal-add.component';
 import { FileTemplateComponent } from 'src/app/components/file-template/file-template.component';
 import { BgrpFileTemplateService } from 'src/app/services/file-template.service';
 import { FileTemplateAddModalComponent } from 'src/app/components/file-template/file-template-modal/file-template-modal-add.component';
 import { FileTemplateEditModalComponent } from 'src/app/components/file-template/file-template-modal/file-template-modal-edit.component';
-import { FormatEditModalComponent } from 'src/app/components/format/format-modal/format_modal_eidt.component';
+import { FormatEditModalComponent } from './components/format/format-modal/format-modal-eidt.component';
 import { CatalogComponent } from './components/catalog/catalog.component';
 import { CatalogAddComponent } from './components/catalog/catalog-add.compoent';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -46,7 +45,6 @@ registerLocaleData(zh);
   ],
   declarations: [
     AppComponent,
-    TableComponent,
     HomeComponent,
     BgrpTaskComponent,
     BgrpFormatComponent,

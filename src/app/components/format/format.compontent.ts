@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BgrpFormatService } from '../../services/format.service';
-import { FormatModalComponent } from './format-modal/format-modal.component';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { BgrpTaskService } from 'src/app/services/task.service';
-import { FormatAddModalComponent } from 'src/app/components/format/format-modal/format_modal_add.component';
-import { FormatEditModalComponent } from 'src/app/components/format/format-modal/format_modal_eidt.component';
+import { FormatAddModalComponent } from './format-modal/format-modal-add.component';
+import { FormatEditModalComponent } from './format-modal/format-modal-eidt.component';
 @Component({
-    selector: 'format',
+    selector: 'rp-format',
     templateUrl: './format.compontent.html',
     styles: [`
         :host ::ng-deep .fc-layoutpanel .fc-content{
@@ -35,7 +34,6 @@ import { FormatEditModalComponent } from 'src/app/components/format/format-modal
         :host ::ng-deep .list-search-every .ant-form-item-label{
         min-width:64px;
         }
-        
         :host ::ng-deep .fc-layoutpanel .fc-content{
         height:100%;
         }
@@ -56,35 +54,34 @@ import { FormatEditModalComponent } from 'src/app/components/format/format-modal
         }
     `]
 })
-export class BgrpFormatComponent implements OnInit{
-    
+export class BgrpFormatComponent implements OnInit {
     classifyrowData: any[];
     anySelections: any;
     selectValue: any;
     chooseDeleteParam: any;
     isVisible = false;
     listOfOption: any[] = [];
-    TASKID: String = "";
+    TASKID: String = '';
 
     rpListOption: any = {
         // 是否显示工具栏
         showToolPanel: true,
-        //工具栏按钮
+        // 工具栏按钮
         tools: [
             {
-                name: "编辑",
-                code: "edit"
+                name: '编辑',
+                code: 'edit'
             },
             {
-                name: "设计",
-                code: "design"
+                name: '设计',
+                code: 'design'
             },
             {
-                name: "删除",
-                code: "remove"
+                name: '删除',
+                code: 'remove'
             },
         ],
-        //表列头
+        // 表列头
         fields: [
             {
                 headerName: '格式编号',
@@ -117,40 +114,38 @@ export class BgrpFormatComponent implements OnInit{
     data: any[] = [];
 
     constructor(public mainService: BgrpFormatService, private modalService: NzModalService,
-         private message: NzMessageService,private taskService: BgrpTaskService) {
+        private message: NzMessageService, private taskService: BgrpTaskService) {
         this.isVisible = false;
 
     }
 
     ngOnInit(): void {
         const this_ = this;
-        //查看cookie中有没有保存taskid;
-        //若有,将TASKID取出赋值
-        let arrStr = document.cookie.split("; ");
+        // 查看cookie中有没有保存taskid;
+        // 若有,将TASKID取出赋值
+        const arrStr = document.cookie.split('; ');
         for (let i = 0; i < arrStr.length; i++) {
-            let temp = arrStr[i].split("=");
-            if (temp[0] == "TASKID")
-                this_.TASKID=temp[1];
+            const temp = arrStr[i].split('=');
+            if (temp[0] === 'TASKID') { this_.TASKID = temp[1]; }
         }
-        
-        //为nz-select赋值,查询任务
+
+        // 为nz-select赋值,查询任务
         this_.taskService.queryData({
-            STASKCODE : "",
-            STASKNAME : ""
-        }).subscribe(result=>{
+            STASKCODE: '',
+            STASKNAME: ''
+        }).subscribe(result => {
             result.DATA.forEach(element => {
                 this_.listOfOption.push(element);
-            })
-            if(this_.TASKID === ""){
+            });
+            if (this_.TASKID === '') {
                 this_.TASKID = this_.listOfOption[0].ID;
             }
-    
-            this.queryRowData();
-        })
 
+            this.queryRowData();
+        });
     }
 
-    listAdd(): void{
+    listAdd(): void {
         this.showAddModal();
     }
 
@@ -164,7 +159,7 @@ export class BgrpFormatComponent implements OnInit{
             this.data = array;
         });
     }
-    //表格操作按钮事件
+    // 表格操作按钮事件
     listToolEvent(event): void {
         switch (event.eventName) {
             case 'edit':
@@ -185,13 +180,13 @@ export class BgrpFormatComponent implements OnInit{
      */
     showAddModal(): void {
         let task;
-        let this_ = this;
-        this.listOfOption.forEach(element =>{
-            if(element.ID===this_.TASKID){
-                task = element; 
+        const this_ = this;
+        this.listOfOption.forEach(element => {
+            if (element.ID === this_.TASKID) {
+                task = element;
             }
-        })
-        
+        });
+
         const modal = this.modalService.create({
             nzTitle: '新建报表',
             nzContent: FormatAddModalComponent,
@@ -201,8 +196,8 @@ export class BgrpFormatComponent implements OnInit{
                 this_.insertOrUpdate(event);
             },
             nzOnCancel(componentParam) {
-                //点击弹框右上角❌,回调事件
-                if(componentParam.current === 2){
+                // 点击弹框右上角❌,回调事件
+                if (componentParam.current === 2) {
                     this_.queryRowData();
                 }
             },
@@ -210,38 +205,37 @@ export class BgrpFormatComponent implements OnInit{
                 param: task
             }
         });
-         //当关闭对话框时判断是否已经新增了数据,若已新增则更新表格数据
-         modal.afterClose.subscribe((result) =>{
-            if(result !== undefined && result.data === 'refresh'){
-                //更新表格数据
+        // 当关闭对话框时判断是否已经新增了数据,若已新增则更新表格数据
+        modal.afterClose.subscribe((result) => {
+            if (result !== undefined && result.data === 'refresh') {
+                // 更新表格数据
                 this_.queryRowData();
             }
-        })
+        });
     }
-    
+
     /**
-     * 
      * @param param 新增修改调用后台接口
      */
-    insertOrUpdate(param: any): void{
-        let this_ = this;
+    insertOrUpdate(param: any): void {
+        const this_ = this;
         this.mainService.insertOrUpdate(param).subscribe(result => {
-            if(result.CODE === "0"){
+            if (result.CODE === '0') {
                 this_.message.success(result.MSG);
-                //刷新列表数据
+                // 刷新列表数据
                 this_.queryRowData();
-            }else{
+            } else {
                 this_.message.error(result.MSG);
             }
-        })
+        });
     }
 
     /**
      * 选择报表任务查询
      */
     selectTask(event): void {
-        //将选择的任务id保存入cookie
-        document.cookie = "TASKID="+event;
+        // 将选择的任务id保存入cookie
+        document.cookie = 'TASKID=' + event;
         this.TASKID = event;
         this.queryRowData();
     }
@@ -260,69 +254,68 @@ export class BgrpFormatComponent implements OnInit{
         this.isVisible = false;
     }
     /**
-     * 
      * @param param 新增修改调用后台接口
      */
-    deleteOne(param: any): void{
+    deleteOne(param: any): void {
         const this_ = this;
         this.mainService.deleteOne(param).subscribe(result => {
-            if(result.CODE === "0"){
+            if (result.CODE === '0') {
                 this_.message.success(result.MSG);
-                //刷新列表数据
+                // 刷新列表数据
                 this_.queryRowData();
-            }else{
+            } else {
                 this_.message.error(result.MSG);
             }
-        })
+        });
     }
 
     /**
      * @description 编辑弹窗
      */
     showEditModal(param: string): void {
-        let this_ = this;
+        const this_ = this;
         let task;
-        this.listOfOption.forEach(element =>{
-            if(element.ID===this_.TASKID){
-                task = element; 
+        this.listOfOption.forEach(element => {
+            if (element.ID === this_.TASKID) {
+                task = element;
             }
-        })
+        });
         const modal = this.modalService.create({
             nzTitle: '编辑格式',
             nzContent: FormatEditModalComponent,
             nzWidth: '550',
             nzOnOk(componentParam) {
                 const condition = {
-                    ID:componentParam.ID,
-                    SNAME:componentParam.SNAME,
-                    SCODE:componentParam.SCODE,
-                    SDES:componentParam.SDES,
-                }
+                    ID: componentParam.ID,
+                    SNAME: componentParam.SNAME,
+                    SCODE: componentParam.SCODE,
+                    SDES: componentParam.SDES,
+                };
                 this_.updateData(condition);
             },
             nzOnCancel(componentParam) {
             },
             nzComponentParams: {
                 param: {
-                    TASK : task,
-                    PARAM : param
+                    TASK: task,
+                    PARAM: param
                 }
             }
         });
     }
-    updateData(param: any): void{
+    updateData(param: any): void {
         const this_ = this;
         this.mainService.insertOrUpdate(param).subscribe(result => {
-            if(result.CODE === "0"){
+            if (result.CODE === '0') {
                 this_.message.success(result.MSG);
-                //刷新列表数据
+                // 刷新列表数据
                 this_.queryRowData();
-            }else if(result.CODE === "20001"){
+            } else if (result.CODE === '20001') {
                 this_.message.success(result.DATA);
-            }else{
+            } else {
                 this_.message.error(result.MSG);
             }
-        })
+        });
     }
 }
 

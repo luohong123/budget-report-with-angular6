@@ -7,7 +7,7 @@ import { BgrpFileTemplateService } from 'src/app/services/file-template.service'
  * 新增报表格式页面
  */
 @Component({
-  selector: 'file-template-modal-add',
+  selector: 'rp-file-template-modal-add',
   template: `
     <nz-steps [nzCurrent]="current">
       <nz-step nzTitle="填写基础信息"></nz-step>
@@ -135,12 +135,11 @@ export class FileTemplateAddModalComponent {
   }
 
   next(): void {
-    this.insertData().subscribe(result=>{
-      if(result.CODE === "0"){
-        
+    this.insertData().subscribe(result => {
+      if (result.CODE === '0') {
         this.current += 1;
       }
-    })
+    });
   }
 
   done(): void {
@@ -148,9 +147,9 @@ export class FileTemplateAddModalComponent {
   }
 
   destroyModal(): void {
-    if(this.current === 0){
+    if (this.current === 0) {
       this.modal.destroy({ data: '' });
-    }else if(this.current === 1){
+    } else if (this.current === 1) {
       this.modal.destroy({ data: 'refresh' });
     }
   }
@@ -171,18 +170,17 @@ export class FileTemplateAddModalComponent {
     }
   }
 
-  constructor(private modal: NzModalRef,private http:HttpClient,private mainService: BgrpFileTemplateService) {
+  constructor(private modal: NzModalRef, private http: HttpClient, private mainService: BgrpFileTemplateService) {
   }
 
   /**
    * 保存数据
    */
-  insertData(): any{
+  insertData(): any {
 
     const param: any = {
       SNAME: this.SNAME,
       STYPE: this.STYPE,
-      //SATTR: this.SATTR,
       SDES: this.SDES,
       STASKID: this.TASKID,
       NORDER: this.NORDER

@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 
 @Component({
-  selector: 'bgrp-format-modal',
+  selector: 'rp-format-modal',
   template: `
   <div>
     <fc-layoutcol fcheader fccontent1>

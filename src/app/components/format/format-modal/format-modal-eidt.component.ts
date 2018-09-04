@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { NzModalRef } from 'ng-zorro-antd';
 import { Input } from '@angular/core';
 
 /**
  * 新增报表格式页面
  */
 @Component({
-  selector: 'format-modal-edit',
+  selector: 'rp-format-modal-edit',
   template: `
     <div class="steps-content">
       <div class="form-control clearfix">
@@ -40,7 +39,7 @@ import { Input } from '@angular/core';
     </div>
   `,
   styles: [
-    ` .clearfix{clear:both;}   
+    ` .clearfix{clear:both;}
       .steps-content {
         height:auto;
         margin-top: 16px;
@@ -78,7 +77,6 @@ export class FormatEditModalComponent {
   NORDER: number;
   STASKNAME: String;
   TASKID: String;
-  
   @Input()
   set param(value: any) {
     this.STASKNAME = value.TASK.STASKNAME;

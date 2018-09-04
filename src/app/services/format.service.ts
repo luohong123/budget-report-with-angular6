@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
-import { DaoService  } from 'fccore2';
+import { DaoService } from 'fccore2';
 
 @Injectable()
-export class BgrpFormatService   {
+export class BgrpFormatService {
   constructor(private daoService: DaoService) {
-   // super(providers, "BG_RP_FORMAT");
+    // super(providers, "BG_RP_FORMAT");
   }
 
 
-  queryData(condition: any){
-    return this.daoService.postFromApi('BUDGET/BG_RP_FORMAT/queryFormatData',condition)
+  queryData(condition: any) {
+    return this.daoService.postFromApi('BUDGET/BG_RP_FORMAT/queryFormatData', condition);
   }
-  insertOrUpdate(param: any){
-    return this.daoService.postFromApi('BUDGET/BG_RP_FORMAT/insertOrUpdate',param)
+  insertOrUpdate(param: any) {
+    return this.daoService.postFromApi('BUDGET/BG_RP_FORMAT/insertOrUpdate', param);
   }
-  deleteOne(param: any){
-    return this.daoService.postFromApi('BUDGET/BG_RP_FORMAT/delete',param)
+  deleteOne(param: any) {
+    return this.daoService.postFromApi('BUDGET/BG_RP_FORMAT/delete', param);
   }
-  queryAttr(param: any){
-    return this.daoService.postFromApi('BUDGET/BG_RP_FORMAT/queryAttr',param);
+  queryAttr(param: any) {
+    return this.daoService.postFromApi('BUDGET/BG_RP_FORMAT/queryAttr', param);
   }
 }

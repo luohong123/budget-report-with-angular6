@@ -5,14 +5,14 @@ import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { TaskModalComponent } from './task_modal.compontent';
 
 @Component({
-    selector: 'task',     //selector 要更正对应
-    templateUrl: './task.compontent.html',   //html 写在这里
+    selector: 'rp-task',     // selector 要更正对应
+    templateUrl: './task.compontent.html',   // html 写在这里
     styleUrls: [`./task.compontent.css`]
 })
 export class BgrpTaskComponent {
 
-    taskCode_filter: any = "";
-    taskName_filter: any = "";
+    taskCode_filter: any = '';
+    taskName_filter: any = '';
 
     isVisible = false;
     chooseDeleteParam: any;
@@ -20,18 +20,18 @@ export class BgrpTaskComponent {
     rpListOption: any = {
         // 是否显示工具栏
         showToolPanel: true,
-        //工具栏按钮
+        // 工具栏按钮
         tools: [
             {
-                name: "编辑",
-                code: "edit"
+                name: '编辑',
+                code: 'edit'
             },
             {
-                name: "删除",
-                code: "remove"
+                name: '删除',
+                code: 'remove'
             },
         ],
-        //表列头
+        // 表列头
         fields: [
             {
                 headerName: '任务编号',
@@ -50,7 +50,7 @@ export class BgrpTaskComponent {
             }
         ]
     };
-    //列表数据
+    // 列表数据
     data: any[] = [];
 
     constructor(public mainService: BgrpTaskService, public router: Router, public activedRoute: ActivatedRoute,
@@ -77,7 +77,7 @@ export class BgrpTaskComponent {
      * 新增
      */
     listAdd() {
-        this.showModalForComponent("");
+        this.showModalForComponent('');
     }
     /**
      * 查询数据
@@ -87,7 +87,7 @@ export class BgrpTaskComponent {
         const params = {
             STASKCODE: this.taskCode_filter,
             STASKNAME: this.taskName_filter
-        }
+        };
         const array = [];
         this.mainService.queryData(params).subscribe(result => {
             result.DATA.forEach(element => {
@@ -115,38 +115,11 @@ export class BgrpTaskComponent {
     }
 
     /**
-    * @description 编辑弹窗
-    */
-    //showModalForComponent(param: string) {
-    // let this_ = this;
-    // const subscription = this.modalService.open({
-    //     title: '报表格式编辑',
-    //     content: TaskModalComponent,
-    //     onOk() {
-    //     },
-    //     onCancel() {
-    //     },
-    //     footer: false,
-    //     componentParams: {
-    //         param: param
-    //     }
-    // });
-    // subscription.subscribe(result => {
-    //     try {
-    //         result=JSON.parse(result);
-    //         this_.insertOrUpdate(result);
-    //     } catch(e) {
-    //     }
-    // })
-    //}
-
-    /**
      * 判断参数是否是json格式
-     * @param str 
      */
     isJSON(str: any): Boolean {
         try {
-            var obj = JSON.parse(str);
+            const obj = JSON.parse(str);
             return true;
         } catch (e) {
             return false;
@@ -158,21 +131,21 @@ export class BgrpTaskComponent {
      * @param param 新增修改调用后台接口
      */
     insertOrUpdate(param: any) {
-        let this_ = this;
+        const this_ = this;
         this.mainService.insertOrUpdate(param).subscribe(result => {
-            if (result.CODE === "0") {
+            if (result.CODE === '0') {
                 this_.message.success(result.MSG);
                 this_.queryRowData();
-            } else if (result.CODE === "20001") {
+            } else if (result.CODE === '20001') {
                 this_.message.error(result.DATA);
             } else {
                 this_.message.error(result.MSG);
             }
-        })
+        });
     }
 
     /**
-     * 表格操作按钮事件 
+     * 表格操作按钮事件
      */
     listToolEvent(event) {
         switch (event.eventName) {
@@ -180,8 +153,8 @@ export class BgrpTaskComponent {
                 this.showModalForComponent(event.param);
                 break;
             case 'remove':
-                //this.deleteOne(event.param);
-                //弹出提示框
+                // this.deleteOne(event.param);
+                //  弹出提示框
                 this.chooseDeleteParam = event.param;
                 this.isVisible = true;
                 break;
@@ -190,21 +163,20 @@ export class BgrpTaskComponent {
         }
     }
     /**
-    * 
     * @param param 新增修改调用后台接口
     */
     deleteOne(param: any) {
         const this_ = this;
         this.mainService.deleteOne(param).subscribe(result => {
-            if (result.CODE === "0") {
+            if (result.CODE === '0') {
                 this_.message.success(result.MSG);
                 this_.queryRowData();
-            } else if (result.CODE === "20001") {
+            } else if (result.CODE === '20001') {
                 this_.message.error(result.DATA);
             } else {
                 this_.message.error(result.MSG);
             }
-        })
+        });
     }
     /**
      * 删除提示框选择确定

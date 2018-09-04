@@ -19,7 +19,7 @@
         </div>
       </form>
     </div>
-    <rpListdata fccontent2 (rpEvent)="listToolEvent($event)" [rpListOption]="rpListOption" [listdata]="data"></rpListdata>
+    <rp-listdata fccontent2 (rpEvent)="listToolEvent($event)" [rpListOption]="rpListOption" [listdata]="data"></rp-listdata>
   </fc-layoutrow>
 </fc-layoutpanel>
 <nz-modal [(nzVisible)]="isVisible" nzTitle="提示" nzContent="确定删除该条数据吗?" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">

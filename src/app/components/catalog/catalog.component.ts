@@ -1,5 +1,8 @@
 import { Component, HostListener, OnInit, TemplateRef } from '@angular/core';
-import { NzDropdownService, NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent, NzModalService, NzMessageService } from 'ng-zorro-antd';
+import {
+  NzDropdownService, NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent,
+  NzModalService, NzMessageService
+} from 'ng-zorro-antd';
 import { CatalogAddComponent } from './catalog-add.compoent';
 import { HttpClient } from '@angular/common/http';
 import { CatalogService } from 'src/app/services/catalog.services';
@@ -21,7 +24,45 @@ export class CatalogComponent implements OnInit {
   isVisible = false;
   nodes = [
   ];
-
+  // 右侧数据
+  listData = [
+    {
+      title: '目录 1',
+      content: `文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。
+      使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能`,
+      flag: true,
+    },
+    {
+      title: '目录 2',
+      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+      flag: false,
+    },
+    {
+      title: '目录 3',
+      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+      flag: true,
+    },
+    {
+      title: '目录 4',
+      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+      flag: true,
+    },
+    {
+      title: '目录 5',
+      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+      flag: false,
+    },
+    {
+      title: '目录 6',
+      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+      flag: true,
+    },
+    {
+      title: '目录 7',
+      content: '文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
+      flag: false,
+    }
+  ];
   @HostListener('mouseleave', ['$event'])
   mouseLeave(event: MouseEvent): void {
     event.preventDefault();
@@ -140,124 +181,30 @@ export class CatalogComponent implements OnInit {
    * 删除数据
    */
   handleOk() {
-    
-    this.nodes = [
-      // new NzTreeNode({
-      //   title: '预算报表',
-      //   key: '1001',
-      //   // author: 'ANGULAR',
-      //   expanded: true,
-      //   children: [
-      //     {
-      //       title: '目录 1',
-      //       key: '10001',
-      //       author: 'ZORRO',
-      //       children: [
-      //         {
-      //           title: '目录 1.1',
-      //           key: '100011',
-      //           // author: 'ZORRO',
-      //           children: []
-      //         },
-      //         {
-      //           title: '目录 1.2',
-      //           key: '100012',
-      //           author: 'ZORRO',
-      //           children: [
-      //             {
-      //               title: '目录 1.2.1',
-      //               key: '1000121',
-      //               // author: 'ZORRO-FANS',
-      //               isLeaf: true,
-      //               // checked: true,
-      //               // disabled: true
-      //             },
-      //             {
-      //               title: '目录 1.2.2',
-      //               key: '1000122',
-      //               // author: 'ZORRO-FANS',
-      //               isLeaf: true
-      //             }
-      //           ]
-      //         }
-      //       ]
-      //     }
-      //   ]
-      // })
-    ];  
+
+    this.nodes = [];
     this.isVisible = false;
   }
 
-  constructor(private mainService: CatalogService, private nzDropdownService: NzDropdownService, private modalService: NzModalService,private http: HttpClient, private msg: NzMessageService) {
+  constructor(private mainService: CatalogService, private nzDropdownService: NzDropdownService,
+    private modalService: NzModalService, private http: HttpClient, private msg: NzMessageService) {
   }
-//右侧数据
-listData=[
-  {
-    title: '目录 1',
-    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-    flag: true,
-    
-  },
-  {
-    title: '目录 2',
-    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-    flag: false,
-    
-  },
-  {
-    title: '目录 3',
-    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-    flag: true,
-    
-  },
-  {
-    title: '目录 4',
-    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-    flag: true,
-    
-  },
-  {
-    title: '目录 5',
-    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-    flag: false,
-    
-  },
-  {
-    title: '目录 6',
-    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-    flag: true,
-    
-  },
-  {
-    title: '目录 7',
-    content:'文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用树控件可以完整展现其中的层级关系，并具有展开收起选择等交互功能',
-    flag: false,
-    
-  }
-]
+
   ngOnInit(): void {
     const this_ = this;
-    let node = [];
-    this.mainService.queryCatalogTree().subscribe(result=>{
-      // console.log(this_.nodes[0].children);
-      // console.log(result.DATA);
-      this_.nodes.push( new NzTreeNode(result.DATA));
-      // console.log(node);
-      // console.log(this_.nodes);
-    })
-    // this.getData((res: any) => this.data = res.results);
-
-    
+    this.mainService.queryCatalogTree().subscribe(result => {
+      this_.nodes.push(new NzTreeNode(result.DATA));
+    });
   }
+
   // list双击事件
-  dbclick(event){
-   alert(event.title)
+  dbclick(event) {
   }
   // getData(callback: (res: any) => void): void {
   //   this.http.get(fakeDataUrl).subscribe((res: any) => callback(res));
   // }
   onScroll(): void {
-    if (this.loading) return;
+    if (this.loading) { return; }
     this.loading = true;
     if (this.data.length > 14) {
       this.msg.warning('Infinite List loaded all');
