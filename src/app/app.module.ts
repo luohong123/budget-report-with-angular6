@@ -30,6 +30,7 @@ import { CatalogComponent } from './components/catalog/catalog.component';
 import { CatalogAddComponent } from './components/catalog/catalog-add.compoent';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CatalogService } from 'src/app/services/catalog.services';
+import { ListDataFilter } from 'src/app/pipe/report.pipe';
 
 registerLocaleData(zh);
 
@@ -57,7 +58,8 @@ registerLocaleData(zh);
     FileTemplateEditModalComponent,
     FormatEditModalComponent,
     CatalogComponent,
-    CatalogAddComponent
+    CatalogAddComponent,
+    ListDataFilter
   ],
   imports: [
     BrowserModule,
