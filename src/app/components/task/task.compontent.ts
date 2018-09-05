@@ -13,10 +13,8 @@ export class BgrpTaskComponent {
 
     taskCode_filter: any = '';
     taskName_filter: any = '';
-
     isVisible = false;
     chooseDeleteParam: any;
-
     rpListOption: any = {
         // 是否显示工具栏
         showToolPanel: true,
@@ -53,8 +51,12 @@ export class BgrpTaskComponent {
     // 列表数据
     data: any[] = [];
 
-    constructor(public mainService: BgrpTaskService, public router: Router, public activedRoute: ActivatedRoute,
-        private modalService: NzModalService, private message: NzMessageService) {
+    constructor(
+        public mainService: BgrpTaskService,
+        public router: Router,
+        public activedRoute: ActivatedRoute,
+        private modalService: NzModalService,
+        private message: NzMessageService) {
 
         this.queryRowData();
     }
@@ -100,8 +102,9 @@ export class BgrpTaskComponent {
         const this_ = this;
         const modal = this.modalService.create({
             nzTitle: '报表任务编辑',
-            nzWidth: '50%',
+            nzWidth: '35%',
             nzContent: TaskModalComponent,
+            nzFooter: null,
             nzOnOk(event) {
                 this_.insertOrUpdate(event);
             },
@@ -109,9 +112,13 @@ export class BgrpTaskComponent {
             },
             nzComponentParams: {
                 param: param
+            },
+        });
+        modal.afterClose.subscribe(result => {
+            if (result === 'refresh') {
+                this_.queryRowData();
             }
         });
-
     }
 
     /**
@@ -127,8 +134,8 @@ export class BgrpTaskComponent {
     }
 
     /**
-     * 
-     * @param param 新增修改调用后台接口
+     * 新增修改调用后台接口
+     * @param param
      */
     insertOrUpdate(param: any) {
         const this_ = this;

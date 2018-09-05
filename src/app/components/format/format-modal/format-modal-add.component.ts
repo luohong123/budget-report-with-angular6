@@ -216,7 +216,6 @@ export class FormatAddModalComponent {
         });
       }
     });
-
   }
 
   selectChange(mark: String, event: any[]): void {

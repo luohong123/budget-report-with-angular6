@@ -36,9 +36,9 @@
   <div class="right-conrent" nz-col nzSpan="18">
     <div class="btn-tool">
       <div class="btns">
-        <button nz-button nzType="default" >全部</button>
-        <button nz-button nzType="default" >目录</button>
-        <button nz-button nzType="default" >文件</button>
+        <button nz-button [nzType]="btnType[0]" (click)="btnClick('all')">全部</button>
+        <button nz-button [nzType]="btnType[1]" (click)="btnClick('folder')">目录</button>
+        <button nz-button [nzType]="btnType[2]" (click)="btnClick('file')">文件</button>
       </div>
       <div class="select_search">
         <nz-input-group [nzSuffix]="suffixIcon">
@@ -49,7 +49,7 @@
         </ng-template>
       </div>
     </div>
-    <nz-list style="cursor: pointer;" [nzDataSource]="listData|catalogListDataFilter:'all':listSearchValue" [nzRenderItem]="item" [nzItemLayout]="'horizontal'"
+    <nz-list style="cursor: pointer;" [nzDataSource]="listData|catalogListDataFilter:fileType:listSearchValue" [nzRenderItem]="item" [nzItemLayout]="'horizontal'"
       (dbclick)="dbclick($event)">
       <ng-template #item let-item>
         <nz-list-item [nzContent]="''">

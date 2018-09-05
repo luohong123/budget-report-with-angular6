@@ -17,12 +17,14 @@ export class CatalogComponent implements OnInit {
   data: any[] = [];
   loading = false;
   hasMore = true;
+  fileType: String = 'all';
 
   dropdown: NzDropdownContextComponent;
   // can active only one node
   activedNode: NzTreeNode;
   dragNodeElement;
   isVisible = false;
+  btnType: String[] = ['primary', 'default', 'default'];
   nodes = [];
   // 右侧数据
   listData: CatalogListItem[] = [];
@@ -185,7 +187,7 @@ export class CatalogComponent implements OnInit {
     this.mainService.queryCatalogTree().subscribe(result => {
       this_.nodes.push(new NzTreeNode(result.DATA));
     });
-    this.queryCatalogAndINS('0');
+    this.queryCatalogAndINS('');
   }
   // list双击事件
   dbclick(event) {
@@ -196,6 +198,26 @@ export class CatalogComponent implements OnInit {
    */
   fileListClick(event: any): void {
     console.log(event);
+    const key = event.ID;
+    if (event.Type === 'folder') {
+      this.queryCatalogAndINS(key);
+    }
+    console.log(this.nodes);
+    // 左侧目录选中
+    const node = this.nodes[0];
+    this.findNodeSelect(node, key);
+    console.log(this.nodes);
+  }
+
+  findNodeSelect(node: NzTreeNode, key: String): void {
+    if (node.key === key) {
+      node.isSelected = true;
+      node.isExpanded = true;
+    } else {
+      for ( let i = 0; i < node.children.length; i++ ) {
+        this.findNodeSelect(node.children[i], key);
+      }
+    }
   }
 
   onScroll(): void {
@@ -236,12 +258,35 @@ export class CatalogComponent implements OnInit {
       }
     });
   }
+  /**
+   * 查询目录节点下的所有文件
+   * @param id
+   */
   queryCatalogAndINS(id: String): void {
     this.mainService.queryCatalogAndINS({ID : id}).subscribe(result => {
       if (result.CODE === '0') {
         this.listData = result.DATA;
       }
     });
+  }
+  /**
+   *  全部/目录/文件 点击事件 进行文件筛选
+   */
+  btnClick(event: String): void {
+    switch (event) {
+      case 'all':
+        this.btnType = ['primary', 'default', 'default'];
+        this.fileType = 'all';
+        break;
+      case 'folder':
+        this.fileType = 'folder';
+        this.btnType = ['default', 'primary', 'default'];
+        break;
+      case 'file':
+        this.fileType = 'file';
+        this.btnType = ['default', 'default', 'primary'];
+        break;
+    }
   }
 }
 
