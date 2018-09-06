@@ -14,36 +14,33 @@ import { CatalogListItem } from 'src/app/interface/report.interface';
   styleUrls: [`./catalog.component.css`]
 })
 export class CatalogComponent implements OnInit {
-  data: any[] = [];
-  loading = false;
-  hasMore = true;
   fileType: String = 'all';
-
+  listLoading = true;
   dropdown: NzDropdownContextComponent;
   // can active only one node
   activedNode: NzTreeNode;
-  dragNodeElement;
+  // dragNodeElement;
   isVisible = false;
   btnType: String[] = ['primary', 'default', 'default'];
   nodes = [];
   // 右侧数据
   listData: CatalogListItem[] = [];
 
-  @HostListener('mouseleave', ['$event'])
-  mouseLeave(event: MouseEvent): void {
-    event.preventDefault();
-    if (this.dragNodeElement && this.dragNodeElement.className.indexOf('is-dragging') > -1) {
-      this.dragNodeElement.className = this.dragNodeElement.className.replace(' is-dragging', '');
-    }
-  }
+  // @HostListener('mouseleave', ['$event'])
+  // mouseLeave(event: MouseEvent): void {
+  //   event.preventDefault();
+  //   if (this.dragNodeElement && this.dragNodeElement.className.indexOf('is-dragging') > -1) {
+  //     this.dragNodeElement.className = this.dragNodeElement.className.replace(' is-dragging', '');
+  //   }
+  // }
 
-  @HostListener('mousedown', ['$event'])
-  mouseDown(): void {
-    // do not prevent
-    if (this.dragNodeElement && this.dragNodeElement.className.indexOf('is-dragging') > -1) {
-      this.dragNodeElement.className = this.dragNodeElement.className.replace(' is-dragging', '');
-    }
-  }
+  // @HostListener('mousedown', ['$event'])
+  // mouseDown(): void {
+  //   // do not prevent
+  //   if (this.dragNodeElement && this.dragNodeElement.className.indexOf('is-dragging') > -1) {
+  //     this.dragNodeElement.className = this.dragNodeElement.className.replace(' is-dragging', '');
+  //   }
+  // }
 
   /**
    * important:
@@ -80,24 +77,30 @@ export class CatalogComponent implements OnInit {
   }
 
   // 选中节点
-  activeNode(data: NzFormatEmitEvent): void {
-    console.log(data);
-    if (this.activedNode) {
-      this.activedNode = null;
-    }
-    data.node.isSelected = true;
-    this.activedNode = data.node;
-
-    // 查询当前目录下的文件
-    this.queryCatalogAndINS(data.node.key);
-  }
-
-  dragStart(event: NzFormatEmitEvent): void {
-    // disallow drag if root or search
-    this.activedNode = null;
-    this.dragNodeElement = event.event.srcElement;
-    if (this.dragNodeElement.className.indexOf('is-dragging') === -1) {
-      this.dragNodeElement.className = event.event.srcElement.className + ' is-dragging';
+  activeNode(data: NzFormatEmitEvent | NzTreeNode): void {
+    if (data instanceof NzTreeNode) {
+      if (data === this.activedNode) {
+        return;
+      }
+      if (this.activedNode) {
+        this.activedNode = null;
+      }
+      // data.isExpanded = true;
+      data.isSelected = true;
+      this.activedNode = data;
+      this.queryCatalogAndINS(data.key);
+    } else {
+      if (data.node === this.activedNode) {
+        return;
+      }
+      if (this.activedNode) {
+        this.activedNode = null;
+      }
+      // data.node.isExpanded = true;
+      data.node.isSelected = true;
+      this.activedNode = data.node;
+      // 查询当前目录下的文件
+      this.queryCatalogAndINS(data.node.key);
     }
   }
 
@@ -153,7 +156,7 @@ export class CatalogComponent implements OnInit {
     const level = this_.activedNode.level;
     const key = this.activedNode.key;
     const nodeChildren: any[] = this.nodes[0].children;
-    this.mainService.removeCatalogNode({ID : this.activedNode.key}).subscribe(result => {
+    this.mainService.removeCatalogNode({ ID: this.activedNode.key }).subscribe(result => {
       if (result.CODE === '0') {
         this_.msg.success(result.MSG);
         this.findRemoveNode(nodeChildren, key);
@@ -168,7 +171,7 @@ export class CatalogComponent implements OnInit {
    * @param key 要删除节点的key
    */
   findRemoveNode(nodeChildren: any, key: String): void {
-    for ( let i = 0; i < nodeChildren.length; i ++ ) {
+    for (let i = 0; i < nodeChildren.length; i++) {
       if (nodeChildren[i].key === key) {
         nodeChildren.splice(i, 1);
         break;
@@ -178,56 +181,31 @@ export class CatalogComponent implements OnInit {
     }
   }
 
-  constructor(private mainService: CatalogService, private nzDropdownService: NzDropdownService,
-    private modalService: NzModalService, private http: HttpClient, private msg: NzMessageService) {
-  }
-
-  ngOnInit(): void {
-    const this_ = this;
-    this.mainService.queryCatalogTree().subscribe(result => {
-      this_.nodes.push(new NzTreeNode(result.DATA));
-    });
-    this.queryCatalogAndINS('');
-  }
-  // list双击事件
-  dbclick(event) {
-    console.log(event);
-  }
   /**
    * list单击事件
    */
   fileListClick(event: any): void {
-    console.log(event);
     const key = event.ID;
     if (event.Type === 'folder') {
-      this.queryCatalogAndINS(key);
+      this.findNodeSelect(this.activedNode, key);
     }
-    console.log(this.nodes);
-    // 左侧目录选中
-    const node = this.nodes[0];
-    this.findNodeSelect(node, key);
-    console.log(this.nodes);
   }
 
+  /**
+   * @description 寻找下级目录并选中打开
+   * @param node
+   * @param key
+   */
   findNodeSelect(node: NzTreeNode, key: String): void {
     if (node.key === key) {
-      node.isSelected = true;
-      node.isExpanded = true;
+      this.activeNode(node);
+      if (node.parentNode && !node.parentNode.isExpanded) {
+        node.parentNode.isExpanded = !node.parentNode.isExpanded;
+      }
     } else {
-      for ( let i = 0; i < node.children.length; i++ ) {
+      for (let i = 0; i < node.children.length; i++) {
         this.findNodeSelect(node.children[i], key);
       }
-    }
-  }
-
-  onScroll(): void {
-    if (this.loading) { return; }
-    this.loading = true;
-    if (this.data.length > 14) {
-      this.msg.warning('Infinite List loaded all');
-      this.hasMore = false;
-      this.loading = false;
-      return;
     }
   }
 
@@ -239,9 +217,9 @@ export class CatalogComponent implements OnInit {
     const this_ = this;
     const node = this.activedNode;
     const param = {
-      NAME : componentParam.name,
-      ID : componentParam.node.key,
-      PATH : componentParam.node.spath
+      NAME: componentParam.name,
+      ID: componentParam.node.key,
+      PATH: componentParam.node.spath
     };
     this.mainService.addCatalogNode(param).subscribe(result => {
       if (result.CODE === '0') {
@@ -253,7 +231,7 @@ export class CatalogComponent implements OnInit {
           key: result.DATA,
           isLeaf: true
         }]);
-      }  else {
+      } else {
         this_.msg.error(result.MSG);
       }
     });
@@ -263,9 +241,12 @@ export class CatalogComponent implements OnInit {
    * @param id
    */
   queryCatalogAndINS(id: String): void {
-    this.mainService.queryCatalogAndINS({ID : id}).subscribe(result => {
+    this.listData = [];
+    this.listLoading = true;
+    this.mainService.queryCatalogAndINS({ ID: id }).subscribe(result => {
       if (result.CODE === '0') {
         this.listData = result.DATA;
+        this.listLoading = false;
       }
     });
   }
@@ -288,5 +269,18 @@ export class CatalogComponent implements OnInit {
         break;
     }
   }
+
+  constructor(private mainService: CatalogService, private nzDropdownService: NzDropdownService,
+    private modalService: NzModalService, private http: HttpClient, private msg: NzMessageService) {
+  }
+
+  ngOnInit(): void {
+    // const this_ = this;
+    this.mainService.queryCatalogTree().subscribe(result => {
+      this.nodes.push(new NzTreeNode(result.DATA));
+      this.activeNode(this.nodes[0]);
+    });
+  }
+
 }
 

@@ -8,7 +8,7 @@
         <i class="anticon anticon-search"></i>
       </ng-template>
     </div>
-    <nz-tree [(ngModel)]="nodes" [nzSearchValue]="searchValue" [nzShowExpand]="true" (nzOnDragStart)="dragStart($event)"
+    <nz-tree [(ngModel)]="nodes" [nzSearchValue]="searchValue" [nzShowExpand]="true"
       (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)">
       <ng-template #contextTemplate>
         <ul nz-menu nzInDropDown>
@@ -50,7 +50,7 @@
       </div>
     </div>
     <nz-list style="cursor: pointer;" [nzDataSource]="listData|catalogListDataFilter:fileType:listSearchValue" [nzRenderItem]="item" [nzItemLayout]="'horizontal'"
-      (dbclick)="dbclick($event)">
+    [nzLoading]="listLoading">
       <ng-template #item let-item>
         <nz-list-item [nzContent]="''">
           <!-- [nzActions]="[editAction,moreAction]" -->
