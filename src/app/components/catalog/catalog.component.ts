@@ -202,6 +202,7 @@ export class CatalogComponent implements OnInit {
       if (node.parentNode && !node.parentNode.isExpanded) {
         node.parentNode.isExpanded = !node.parentNode.isExpanded;
       }
+      node.isExpanded = true;
     } else {
       for (let i = 0; i < node.children.length; i++) {
         this.findNodeSelect(node.children[i], key);
@@ -279,6 +280,7 @@ export class CatalogComponent implements OnInit {
     this.mainService.queryCatalogTree().subscribe(result => {
       this.nodes.push(new NzTreeNode(result.DATA));
       this.activeNode(this.nodes[0]);
+      this.nodes[0].isExpanded = true;
     });
   }
 

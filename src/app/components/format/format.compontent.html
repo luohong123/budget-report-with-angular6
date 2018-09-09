@@ -11,8 +11,8 @@
             fcValueCode="ID" (ngModelChange)="selectTask($event)"  [ngModelOptions]="{standalone: true}" fcPlaceHolder="请选择"> 
           </fc-combo>-->
           <span>报表任务:</span>
-          <nz-select style="width: 200px;" [(ngModel)]='TASKID' name="STASKCODE" (ngModelChange)="selectTask($event)"	>
-            <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.STASKNAME" [nzValue]="option.ID"></nz-option>
+          <nz-select style="width: 200px;" [(ngModel)]='TASKCODE' name="STASKCODE" (ngModelChange)="selectTask($event)"	>
+            <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.STASKNAME" [nzValue]="option.STASKCODE"></nz-option>
           </nz-select>
         </div>
       </form>

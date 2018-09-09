@@ -24,7 +24,7 @@ import { BgrpFormatService } from 'src/app/services/format.service';
       </div>
       <div class="form-control clearfix">
         <label>报表简码:</label>
-        <input class="form-right" nz-input placeholder="请输入报表简码" />
+        <input class="form-right"  [(ngModel)]="SBREVITYCODE" name="SBREVITYCODE" nz-input placeholder="请输入报表简码" />
       </div>
       <div class="form-control clearfix">
         <label>报表名称:</label>
@@ -32,11 +32,26 @@ import { BgrpFormatService } from 'src/app/services/format.service';
       </div>
       <div class="form-control clearfix">
         <label>金额单位:</label>
-        <nz-select class="form-right" [(ngModel)]='singleValue' name="SUNIT" nzPlaceHolder="请选择">
+        <nz-select class="form-right" [(ngModel)]='NUNIT' name="NUNIT" nzPlaceHolder="请选择">
           <nz-option nzLabel="元" nzValue="0"></nz-option>
           <nz-option nzLabel="万元" nzValue="4"></nz-option>
           <nz-option nzLabel="亿元" nzValue="8"></nz-option>
         </nz-select>
+      </div>
+      <div class="form-control clearfix">
+        <label>上报性质:</label>
+        <nz-select class="form-right" [(ngModel)]='SSBXZ' name="SSBXZ" nzPlaceHolder="请选择">
+          <nz-option nzLabel="年度" nzValue="1"></nz-option>
+          <nz-option nzLabel="季度" nzValue="2"></nz-option>
+          <nz-option nzLabel="月度" nzValue="3"></nz-option>
+        </nz-select>
+      </div>
+      <div class="form-control clearfix">
+        <label>报表类型:</label>
+        <nz-radio-group [(ngModel)]="STYPE">
+          <label nz-radio nzValue="1">固定</label>
+          <label nz-radio nzValue="2">浮动</label>
+        </nz-radio-group>
       </div>
       <div class="form-control clearfix">
         <label>排序码:</label>
@@ -141,21 +156,24 @@ export class FormatAddModalComponent {
   current = 0;
   SNAME: String;
   SCODE: String;
-  SUNIT: String;
+  NUNIT: String = '0';
   SDES: String;
   NORDER: String;
   H: String;
   D: String;
+  STYPE: String = '1';
+  SSBXZ: String;
+  SBREVITYCODE: String;
   attrList: any[] = [];
 
 
   STASKNAME: String;
-  STASKID: String;
+  STASKCODE: String;
 
   @Input()
   set param(value: any) {
     this.STASKNAME = value.STASKNAME;
-    this.STASKID = value.ID;
+    this.STASKCODE = value.STASKCODE;
     // 查询头属性和数据属性
     this.queryAttr();
   }
@@ -198,9 +216,12 @@ export class FormatAddModalComponent {
     const param = {
       SNAME: this.SNAME,
       SCODE: this.SCODE,
-      SUNIT: this.SUNIT,
+      NUNIT: this.NUNIT,
       SDES: this.SDES,
-      STASKID: this.STASKID,
+      STASKCODE: this.STASKCODE,
+      STYPE: this.STYPE,
+      SSBXZ: this.SSBXZ,
+      SBREVITYCODE: this.SBREVITYCODE
     };
     return this.mainService.insertOrUpdate(param);
   }

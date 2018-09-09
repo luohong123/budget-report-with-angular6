@@ -15,7 +15,7 @@ export class FileTemplateComponent implements OnInit {
 
     // 任务select
     listOfOption: any[] = [];
-    TASKID: String = '';
+    TASKCODE: String = '';
 
     isVisible = false;
     chooseDeleteParam: any;
@@ -47,7 +47,7 @@ export class FileTemplateComponent implements OnInit {
             },
             {
                 headerName: '文件属性',
-                field: 'SATTR',
+                field: 'SATTRCODE',
                 menuTabs: []
             },
             {
@@ -77,8 +77,8 @@ export class FileTemplateComponent implements OnInit {
             result.DATA.forEach(element => {
                 this_.listOfOption.push(element);
             });
-            if (this_.TASKID === '') {
-                this_.TASKID = this_.listOfOption[0].ID;
+            if (this_.TASKCODE === '') {
+                this_.TASKCODE = this_.listOfOption[0].STASKCODE;
             }
 
             this.queryRowData();
@@ -90,7 +90,7 @@ export class FileTemplateComponent implements OnInit {
     queryRowData(): void {
         this.data = [];
         const array = [];
-        this.mainService.queryData(this.TASKID).subscribe(result => {
+        this.mainService.queryData(this.TASKCODE).subscribe(result => {
             result.DATA.forEach(element => {
                 array.push(element);
             });
@@ -101,7 +101,7 @@ export class FileTemplateComponent implements OnInit {
      * 选择任务
      */
     selectTask(event: String): void {
-        this.TASKID = event;
+        this.TASKCODE = event;
         this.queryRowData();
     }
 
@@ -135,7 +135,7 @@ export class FileTemplateComponent implements OnInit {
         let task;
         const this_ = this;
         this.listOfOption.forEach(element => {
-            if (element.ID === this_.TASKID) {
+            if (element.STASKCODE === this_.TASKCODE) {
                 task = element;
             }
         });
@@ -163,7 +163,7 @@ export class FileTemplateComponent implements OnInit {
                 // 更新表格数据
                 this_.queryRowData();
             }
-        })
+        });
     }
     /**
      * @description 编辑弹窗
@@ -172,10 +172,10 @@ export class FileTemplateComponent implements OnInit {
         let task;
         const this_ = this;
         this.listOfOption.forEach(element => {
-            if (element.ID === this_.TASKID) {
+            if (element.STASKCODE === this_.TASKCODE) {
                 task = element;
             }
-        })
+        });
         const modal = this.modalService.create({
             nzTitle: '编辑模板',
             nzContent: FileTemplateEditModalComponent,
@@ -209,7 +209,7 @@ export class FileTemplateComponent implements OnInit {
             } else {
                 this_.message.error(result.MSG);
             }
-        })
+        });
     }
     /**
      * 删除数据
@@ -219,7 +219,6 @@ export class FileTemplateComponent implements OnInit {
         this.isVisible = false;
     }
     /**
-    * 
     * @param param 新增修改调用后台接口
     */
     deleteOne(param: any): void {

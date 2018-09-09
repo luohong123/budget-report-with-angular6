@@ -37,7 +37,7 @@ import { BgrpFileTemplateService } from 'src/app/services/file-template.service'
     </div>
   `,
   styles: [
-    ` .clearfix{clear:both;}   
+    ` .clearfix{clear:both;}
       .steps-content {
         height:auto;
         margin-top: 16px;
@@ -73,7 +73,7 @@ export class FileTemplateEditModalComponent {
   SDES: String;
   NORDER: number;
   STASKNAME: String;
-  TASKID: String;
+  TASKCODE: String;
 
   @Input()
   set param(value: any) {

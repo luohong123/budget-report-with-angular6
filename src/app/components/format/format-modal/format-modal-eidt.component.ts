@@ -79,6 +79,7 @@ export class FormatEditModalComponent {
   TASKID: String;
   @Input()
   set param(value: any) {
+    console.log(value);
     this.STASKNAME = value.TASK.STASKNAME;
     this.SNAME = value.PARAM.SNAME;
     this.SCODE = value.PARAM.SCODE;

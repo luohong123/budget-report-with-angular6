@@ -25,8 +25,8 @@ import { BgrpFileTemplateService } from 'src/app/services/file-template.service'
       <div class="form-control clearfix">
         <label>模板类型:</label>
         <nz-select class="form-right" [(ngModel)]='STYPE' name="STYPE" nzPlaceHolder="请选择">
-          <nz-option nzLabel="单格式" nzValue="0"></nz-option>
-          <nz-option nzLabel="多格式" nzValue="1"></nz-option>
+          <nz-option nzLabel="单格式" nzValue="S"></nz-option>
+          <nz-option nzLabel="多格式" nzValue="M"></nz-option>
         </nz-select>
       </div>
       <div class="form-control clearfix">
@@ -55,7 +55,7 @@ import { BgrpFileTemplateService } from 'src/app/services/file-template.service'
         </dt>
         <dd>操作成功，请绘制格式</dd>
     </dl>
-    <div class="form-controls"> 
+    <div class="form-controls">
       <div class="form-control form-control3">
         <label>模板名称:</label>
         <span class="form-right">{{SNAME}}</span>
@@ -126,12 +126,12 @@ export class FileTemplateAddModalComponent {
   SDES: String;
   NORDER: number;
   STASKNAME: String;
-  TASKID: String;
+  TASKCODE: String;
 
   @Input()
   set param(value: any) {
     this.STASKNAME = value.STASKNAME;
-    this.TASKID = value.ID;
+    this.TASKCODE = value.STASKCODE;
   }
 
   next(): void {
@@ -177,14 +177,14 @@ export class FileTemplateAddModalComponent {
    * 保存数据
    */
   insertData(): any {
-
     const param: any = {
       SNAME: this.SNAME,
       STYPE: this.STYPE,
       SDES: this.SDES,
-      STASKID: this.TASKID,
+      STASKCODE: this.TASKCODE,
       NORDER: this.NORDER
     };
     return this.mainService.insertOrUpdate(param);
   }
+
 }

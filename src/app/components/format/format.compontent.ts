@@ -61,7 +61,7 @@ export class BgrpFormatComponent implements OnInit {
     chooseDeleteParam: any;
     isVisible = false;
     listOfOption: any[] = [];
-    TASKID: String = '';
+    TASKCODE: String = '';
 
     rpListOption: any = {
         // 是否显示工具栏
@@ -121,12 +121,12 @@ export class BgrpFormatComponent implements OnInit {
 
     ngOnInit(): void {
         const this_ = this;
-        // 查看cookie中有没有保存taskid;
-        // 若有,将TASKID取出赋值
+        // 查看cookie中有没有保存TASKCODE;
+        // 若有,将TASKCODE取出赋值
         const arrStr = document.cookie.split('; ');
         for (let i = 0; i < arrStr.length; i++) {
             const temp = arrStr[i].split('=');
-            if (temp[0] === 'TASKID') { this_.TASKID = temp[1]; }
+            if (temp[0] === 'TASKCODE') { this_.TASKCODE = temp[1]; }
         }
 
         // 为nz-select赋值,查询任务
@@ -137,8 +137,8 @@ export class BgrpFormatComponent implements OnInit {
             result.DATA.forEach(element => {
                 this_.listOfOption.push(element);
             });
-            if (this_.TASKID === '') {
-                this_.TASKID = this_.listOfOption[0].ID;
+            if (this_.TASKCODE === '') {
+                this_.TASKCODE = this_.listOfOption[0].STASKCODE;
             }
 
             this.queryRowData();
@@ -152,7 +152,7 @@ export class BgrpFormatComponent implements OnInit {
     queryRowData(): void {
         this.data = [];
         const array = [];
-        this.mainService.queryData(this.TASKID).subscribe(result => {
+        this.mainService.queryData(this.TASKCODE).subscribe(result => {
             result.DATA.forEach(element => {
                 array.push(element);
             });
@@ -182,7 +182,7 @@ export class BgrpFormatComponent implements OnInit {
         let task;
         const this_ = this;
         this.listOfOption.forEach(element => {
-            if (element.ID === this_.TASKID) {
+            if (element.ID === this_.TASKCODE) {
                 task = element;
             }
         });
@@ -235,8 +235,8 @@ export class BgrpFormatComponent implements OnInit {
      */
     selectTask(event): void {
         // 将选择的任务id保存入cookie
-        document.cookie = 'TASKID=' + event;
-        this.TASKID = event;
+        document.cookie = 'TASKCODE=' + event;
+        this.TASKCODE = event;
         this.queryRowData();
     }
     /**
@@ -276,7 +276,7 @@ export class BgrpFormatComponent implements OnInit {
         const this_ = this;
         let task;
         this.listOfOption.forEach(element => {
-            if (element.ID === this_.TASKID) {
+            if (element.STASKCODE === this_.TASKCODE) {
                 task = element;
             }
         });

@@ -36,11 +36,11 @@ import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
       </nz-form-control>
     </nz-form-item>
     <div class="ant-modal-footer steps-action">
-      <button nz-button nzType="primary" (click)="okClick()">
-        <span>确定</span>
-      </button>
       <button nz-button nzType="default" (click)="cancelClick()">
         <span>取消</span>
+      </button>
+      <button nz-button nzType="primary" (click)="okClick()">
+        <span>确定</span>
       </button>
     </div>
   </form>

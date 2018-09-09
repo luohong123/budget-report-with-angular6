@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   template: `
   <div>
     <fc-layoutcol fcheader fccontent1>
-      <fc-text fccontent1 [(ngModel)]="SCODE"  fcPlaceHolder="请输入报表编码" 
+      <fc-text fccontent1 [(ngModel)]="SCODE"  fcPlaceHolder="请输入报表编码"
         fcLabel="报表编码" style="display:block;"></fc-text>
       <fc-text fccontent2  [(ngModel)]="SNAME" fcPlaceHolder="请输入报表名称"
         fcLabel="报表名称" style="display:block;" ></fc-text>
