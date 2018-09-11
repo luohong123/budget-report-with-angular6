@@ -15,6 +15,8 @@ export class BgrpTaskComponent {
     taskName_filter: any = '';
     isVisible = false;
     chooseDeleteParam: any;
+    // 表格刷新等待
+    loading: Boolean = true;
     rpListOption: any = {
         // 是否显示工具栏
         showToolPanel: true,
@@ -64,7 +66,10 @@ export class BgrpTaskComponent {
      * 查询按钮事件
      */
     searchElement() {
-        this.queryRowData();
+
+        const newTime = new Date().getSeconds();
+
+        // this.queryRowData();
     }
     /**
      * 重置按钮事件
@@ -85,6 +90,7 @@ export class BgrpTaskComponent {
      * 查询数据
      */
     queryRowData(): any {
+        this.loading = true;
         this.data = [];
         const params = {
             STASKCODE: this.taskCode_filter,
@@ -95,6 +101,7 @@ export class BgrpTaskComponent {
             result.DATA.forEach(element => {
                 array.push(element);
             });
+            this.loading = false;
             this.data = array;
         });
     }
@@ -199,6 +206,8 @@ export class BgrpTaskComponent {
         this.chooseDeleteParam = null;
         this.isVisible = false;
     }
+
+
 }
 
 

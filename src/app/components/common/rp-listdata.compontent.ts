@@ -3,7 +3,7 @@ import { Component, OnInit, AfterContentInit, Input, Output, EventEmitter, OnCha
 @Component({
     selector: 'rp-listdata',
     template: `
-    <nz-table #nzTable [nzData]="data" [nzPageSize]="10">
+    <nz-table #nzTable [nzData]="data" [nzPageSize]="10" [nzLoading]="loading">
         <thead nz-thead>
             <tr>
                 <th nz-th *ngFor="let item of rpListOption.fields">
@@ -40,15 +40,15 @@ import { Component, OnInit, AfterContentInit, Input, Output, EventEmitter, OnCha
 export class RpListdataComponent implements OnInit, AfterContentInit, OnChanges {
     @Output()
     rpEvent: EventEmitter<Object> = new EventEmitter();
-
     @Input()
     rpListOption: any;
     @Input()
     listdata: any[];
-
     tableField: any[] = [];
     // 表格数据
     data: any[];
+    @Input()
+    loading: Boolean;
 
     constructor() {
     }
@@ -59,7 +59,6 @@ export class RpListdataComponent implements OnInit, AfterContentInit, OnChanges 
         }
     }
     ngAfterContentInit(): void {
-
     }
     ngOnInit(): void {
         this.rpListOption.fields.forEach(element => {
@@ -67,7 +66,6 @@ export class RpListdataComponent implements OnInit, AfterContentInit, OnChanges 
         });
         this.data = this.listdata;
     }
-
     toolClick(code, data) {
         this.rpEvent.emit({ eventName: code, param: data });
     }

@@ -104,6 +104,16 @@ export class BgrpFormatComponent implements OnInit {
                 menuTabs: []
             },
             {
+                headerName: '上报性质',
+                field: 'SSBXZ',
+                menuTabs: []
+            },
+            {
+                headerName: '类型',
+                field: 'STYPE',
+                menuTabs: []
+            },
+            {
                 headerName: '格式说明',
                 field: 'SDES',
                 menuTabs: []
