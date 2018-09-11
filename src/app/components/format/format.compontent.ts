@@ -182,7 +182,7 @@ export class BgrpFormatComponent implements OnInit {
         let task;
         const this_ = this;
         this.listOfOption.forEach(element => {
-            if (element.ID === this_.TASKCODE) {
+            if (element.STASKCODE === this_.TASKCODE) {
                 task = element;
             }
         });

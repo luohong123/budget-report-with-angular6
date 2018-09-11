@@ -158,7 +158,9 @@ export class FileTemplateComponent implements OnInit {
         });
         // 当关闭对话框时判断是否已经新增了数据,若已新增则更新表格数据
         modal.afterClose.subscribe((result) => {
+            console.log(modal);
             modal.destroy();
+            console.log(modal);
             if (result !== undefined && result.data === 'refresh') {
                 // 更新表格数据
                 this_.queryRowData();

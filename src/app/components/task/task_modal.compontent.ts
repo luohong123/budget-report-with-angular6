@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BgrpTaskService } from 'src/app/services/task.service';
 import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
+import { FormControl } from '@angular/forms';
 // import { NzModalSubject } from 'ng-zorro-antd';
 
 @Component({
@@ -27,6 +28,7 @@ import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
       <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="NORDER">排序码</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
         <input nz-input formControlName="NORDER" placeholder="请输入排序号" id="NORDER"/>
+        <nz-form-explain *ngIf="validateForm.get('NORDER').dirty && validateForm.get('NORDER').errors">只能输入数字!</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -78,11 +80,19 @@ export class TaskModalComponent implements OnInit {
       this.validateForm = this.fb.group({
         STASKCODE: [ this_.STASKCODE, [ Validators.required ] ],
         STASKNAME: [ this_.STASKNAME, [ Validators.required ] ],
-        NORDER: [ this_.NORDER, [ Validators.nullValidator ] ],
+        NORDER: [ this_.NORDER, [ Validators.pattern(/^[0-9]*$/) ] ],
         SDES: [ this_.SDES, [ Validators.nullValidator ] ],
       });
     }
 
+    // numberValidator = (control: FormControl): {[s: string]: boolean } => {
+    //   if (!control.value) {
+    //     return { error: false };
+    //   } else {
+    //     const reg = /^[0-9]*$/;
+    //     return {error: !reg.test(control.value)} ;
+    //   }
+    // }
 
     submitForm(): void {
     }

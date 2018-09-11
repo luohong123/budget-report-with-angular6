@@ -24,7 +24,7 @@ import { BgrpFileTemplateService } from 'src/app/services/file-template.service'
       </div>
       <div class="form-control clearfix">
         <label>文件属性:</label>
-        <span class="form-right">{{SATTR}}</span>
+        <span class="form-right">{{SATTRCODE}}</span>
       </div>
       <!--<div class="form-control clearfix">
         <label>排序号:</label>
@@ -69,7 +69,7 @@ export class FileTemplateEditModalComponent {
   ID: String;
   SNAME: String;
   STYPE: String;
-  SATTR: String;
+  SATTRCODE: String;
   SDES: String;
   NORDER: number;
   STASKNAME: String;
@@ -80,7 +80,7 @@ export class FileTemplateEditModalComponent {
     this.STASKNAME = value.TASK.STASKNAME;
     this.SNAME = value.PARAM.SNAME;
     this.STYPE = value.PARAM.STYPE;
-    this.SATTR = value.PARAM.SATTR;
+    this.SATTRCODE = value.PARAM.SATTRCODE;
     this.SDES = value.PARAM.SDES;
     this.ID = value.PARAM.ID;
   }

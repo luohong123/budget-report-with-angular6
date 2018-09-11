@@ -31,10 +31,9 @@ import { BgrpFileTemplateService } from 'src/app/services/file-template.service'
       </div>
       <div class="form-control clearfix">
         <label>文件属性:</label>
-        <nz-select class="form-right" [(ngModel)]='SATTR' name="SATTR" nzMode="tags" nzPlaceHolder="请选择">
-          <nz-option nzLabel="属性一" nzValue="0"></nz-option>
-          <nz-option nzLabel="属性二" nzValue="4"></nz-option>
-          <nz-option nzLabel="属性三" nzValue="8"></nz-option>
+        <nz-select class="form-right" [(ngModel)]='SATTR' name="SATTR" nzPlaceHolder="请选择" nzMode="tags">
+          <nz-option *ngFor="let option of attrList"
+            [nzLabel]="option.SDIM_NAME" [nzValue]="option.SDIM_CODE"></nz-option>
         </nz-select>
       </div>
       <div class="form-control clearfix">
@@ -62,16 +61,16 @@ import { BgrpFileTemplateService } from 'src/app/services/file-template.service'
       </div>
       <div class="form-control form-control3">
         <label>模板属性:</label>
-        <span class="form-right">{{SATTR}}</span>
+        <span class="form-right">{{attrName}}</span>
       </div>
       <div class="form-control form-control3">
         <label>文件类型:</label>
-        <span class="form-right">{{STYPE}}</span>
+        <span class="form-right">{{STYPE==='S'?'单格式':'多格式'}}</span>
       </div>
-      <!--<div class="form-control form-control3">
+      <div class="form-control form-control3">
         <label>包含格式:</label>
-        <span class="form-right">数据属性</span>
-      </div>-->
+        <span class="form-right"></span>
+      </div>
       </div>
     </div>
     <div class="ant-modal-footer steps-action">
@@ -122,19 +121,37 @@ export class FileTemplateAddModalComponent {
   current = 0;
   SNAME: String;
   STYPE: String;
-  SATTR: String;
   SDES: String;
   NORDER: number;
   STASKNAME: String;
   TASKCODE: String;
+  attrList: any[] = [];
+  SATTR: any[] = [];
+  attrName: any[] = [];
 
   @Input()
   set param(value: any) {
     this.STASKNAME = value.STASKNAME;
     this.TASKCODE = value.STASKCODE;
+    // 查询头属性和数据属性
+    this.queryAttr();
   }
 
   next(): void {
+    const this_ = this;
+    let SDIM_CODE = '';
+    let SDIM_NAME = '';
+    const attrListInversion = [];
+    this_.attrList.forEach(function(e) {
+      SDIM_CODE = e.SDIM_CODE;
+      SDIM_NAME = e.SDIM_NAME;
+      attrListInversion[SDIM_CODE] = SDIM_NAME;
+    });
+    this_.SATTR.forEach(function(e) {
+      this_.attrName.push(attrListInversion[e]);
+    });
+    // this_.attrName = this_.attrName.substring(0, this_.attrName.length - 1);
+
     this.insertData().subscribe(result => {
       if (result.CODE === '0') {
         this.current += 1;
@@ -143,7 +160,6 @@ export class FileTemplateAddModalComponent {
   }
 
   done(): void {
-    console.log('done');
   }
 
   destroyModal(): void {
@@ -170,7 +186,9 @@ export class FileTemplateAddModalComponent {
     }
   }
 
-  constructor(private modal: NzModalRef, private http: HttpClient, private mainService: BgrpFileTemplateService) {
+  constructor(private modal: NzModalRef,
+    private http: HttpClient,
+    private mainService: BgrpFileTemplateService) {
   }
 
   /**
@@ -182,9 +200,22 @@ export class FileTemplateAddModalComponent {
       STYPE: this.STYPE,
       SDES: this.SDES,
       STASKCODE: this.TASKCODE,
-      NORDER: this.NORDER
+      NORDER: this.NORDER,
+      SATTR: this.SATTR
     };
     return this.mainService.insertOrUpdate(param);
   }
-
+  /**
+   * 查询属性
+   */
+  queryAttr(): void {
+    const this_ = this;
+    this.mainService.queryAttr('').subscribe(result => {
+      if (result.CODE === '0') {
+        result.DATA.forEach(element => {
+          this_.attrList.push(element);
+        });
+      }
+    });
+  }
 }

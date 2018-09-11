@@ -100,11 +100,11 @@ import { BgrpFormatService } from 'src/app/services/format.service';
       </div>
       <div class="form-control form-control3">
         <label>表头属性:</label>
-        <span class="form-right">数据属性</span>
+        <span class="form-right">{{HNAME}}</span>
       </div>
       <div class="form-control form-control3">
         <label>数据属性:</label>
-        <span class="form-right">数据属性</span>
+        <span class="form-right">{{DNAME}}</span>
       </div>
       </div>
     </div>
@@ -159,13 +159,14 @@ export class FormatAddModalComponent {
   NUNIT: String = '0';
   SDES: String;
   NORDER: String;
-  H: String;
-  D: String;
+  H: any[] = [];
+  D: any[] = [];
   STYPE: String = '1';
   SSBXZ: String;
   SBREVITYCODE: String;
   attrList: any[] = [];
-
+  HNAME: any[] = [];
+  DNAME: any[] = [];
 
   STASKNAME: String;
   STASKCODE: String;
@@ -193,14 +194,26 @@ export class FormatAddModalComponent {
           this_.message.error(result.MSG);
         }
       });
+      let SDIM_CODE = '';
+      let SDIM_NAME = '';
+      const attrListInversion = [];
+      this_.attrList.forEach(function(e) {
+        SDIM_CODE = e.SDIM_CODE;
+        SDIM_NAME = e.SDIM_NAME;
+        attrListInversion[SDIM_CODE] = SDIM_NAME;
+      });
+      this_.H.forEach(function(e) {
+        this_.HNAME.push(attrListInversion[e]);
+      });
+      this_.D.forEach(function(e) {
+        this_.DNAME.push(attrListInversion[e]);
+      });
     } else {
       this.current += 1;
     }
   }
 
   done(): void {
-    console.log('done');
-
   }
 
   destroyModal(): void {
@@ -208,7 +221,9 @@ export class FormatAddModalComponent {
   }
 
 
-  constructor(private modal: NzModalRef, public mainService: BgrpFormatService, private message: NzMessageService) {
+  constructor(private modal: NzModalRef,
+    public mainService: BgrpFormatService,
+    private message: NzMessageService) {
   }
 
 
@@ -221,7 +236,9 @@ export class FormatAddModalComponent {
       STASKCODE: this.STASKCODE,
       STYPE: this.STYPE,
       SSBXZ: this.SSBXZ,
-      SBREVITYCODE: this.SBREVITYCODE
+      SBREVITYCODE: this.SBREVITYCODE,
+      H: this.H,
+      D: this.D,
     };
     return this.mainService.insertOrUpdate(param);
   }
