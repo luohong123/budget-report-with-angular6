@@ -258,6 +258,7 @@ export class BgrpFormatComponent implements OnInit {
      */
     deleteOne(param: any): void {
         const this_ = this;
+        param['STASKCODE'] = this.TASKCODE;
         this.mainService.deleteOne(param).subscribe(result => {
             if (result.CODE === '0') {
                 this_.message.success(result.MSG);
