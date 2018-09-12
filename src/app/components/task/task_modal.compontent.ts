@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BgrpTaskService } from 'src/app/services/task.service';
 import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
 import { FormControl } from '@angular/forms';
+import { Observable, Observer } from 'rxjs';
+import { ValidationErrors } from '@angular/forms';
+import { ValidatorFn } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 // import { NzModalSubject } from 'ng-zorro-antd';
 
 @Component({
@@ -12,9 +16,11 @@ import { FormControl } from '@angular/forms';
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="STASKCODE">任务编码</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
-        <input nz-input formControlName="STASKCODE" placeholder="请输入任务编码" id="STASKCODE"/>
+        <input nz-input formControlName="STASKCODE" placeholder="请输入任务编码" id="STASKCODE" (blur)="onBlurTaskCode()"/>
         <nz-form-explain *ngIf="validateForm.get('STASKCODE').dirty && validateForm.get('STASKCODE').
-          errors">任务编码不能为空!</nz-form-explain>
+          errors.required">任务编码不能为空!</nz-form-explain>
+        <nz-form-explain *ngIf="validateForm.get('STASKCODE').dirty && validateForm.get('STASKCODE').
+        repeat">任务编码已存在!</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -93,7 +99,10 @@ export class TaskModalComponent implements OnInit {
     //     return {error: !reg.test(control.value)} ;
     //   }
     // }
-
+    forbiddenNameValidator(): any {
+      console.log(111);
+      return {repeat: true};
+    }
     submitForm(): void {
     }
 
@@ -106,7 +115,7 @@ export class TaskModalComponent implements OnInit {
           return;
         }
       }
-      this.insertOrUpdate(event);
+      this.insertOrUpdate();
     }
 
     cancelClick(): void {
@@ -115,9 +124,8 @@ export class TaskModalComponent implements OnInit {
 
     /**
      * 新增修改调用后台接口
-     * @param param
      */
-    insertOrUpdate(param: any) {
+    insertOrUpdate() {
       const this_ = this;
       this.validateForm.value.ID = this.ID;
       this.mainService.insertOrUpdate(this.validateForm.value).subscribe(result => {
@@ -131,4 +139,10 @@ export class TaskModalComponent implements OnInit {
           }
       });
   }
+  onBlurTaskCode(event): void {
+    // const inputTaskCode = this.validateForm.value.STASKCODE;
+    // this.validateForm.get('STASKCODE')['repeat'] = true;
+    // this.validateForm.get('STASKCODE').setErrors({repeat: true});
+  }
+
 }

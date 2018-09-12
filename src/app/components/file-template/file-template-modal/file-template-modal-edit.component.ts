@@ -66,7 +66,7 @@ import { BgrpFileTemplateService } from 'src/app/services/file-template.service'
   ]
 })
 export class FileTemplateEditModalComponent {
-  ID: String;
+  STEMPLATEID: String;
   SNAME: String;
   STYPE: String;
   SATTRCODE: String;
@@ -82,7 +82,7 @@ export class FileTemplateEditModalComponent {
     this.STYPE = value.PARAM.STYPE;
     this.SATTRCODE = value.PARAM.SATTRCODE;
     this.SDES = value.PARAM.SDES;
-    this.ID = value.PARAM.ID;
+    this.STEMPLATEID = value.PARAM.STEMPLATEID;
   }
   constructor() {
   }

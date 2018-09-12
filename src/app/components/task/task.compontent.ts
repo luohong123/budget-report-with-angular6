@@ -4,6 +4,7 @@ import { BgrpTaskService } from '../../services/task.service';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { TaskModalComponent } from './task_modal.compontent';
 
+
 @Component({
     selector: 'rp-task',     // selector 要更正对应
     templateUrl: './task.compontent.html',   // html 写在这里
@@ -69,7 +70,7 @@ export class BgrpTaskComponent {
 
         const newTime = new Date().getSeconds();
 
-        // this.queryRowData();
+        this.queryRowData();
     }
     /**
      * 重置按钮事件
@@ -85,7 +86,9 @@ export class BgrpTaskComponent {
      */
     listAdd() {
         this.showModalForComponent('');
+        
     }
+   
     /**
      * 查询数据
      */

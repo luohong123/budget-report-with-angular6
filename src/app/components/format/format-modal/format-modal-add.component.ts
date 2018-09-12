@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
+import { NzModalRef, NzMessageService, UploadFile } from 'ng-zorro-antd';
 import { Input } from '@angular/core';
 import { BgrpFormatService } from 'src/app/services/format.service';
 import { OnInit } from '@angular/core';
@@ -20,7 +20,7 @@ import { Validators } from '@angular/forms';
     <div class="steps-content" *ngIf="current === 0">
       <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
         <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>报表任务</nz-form-label>
+          <nz-form-label [nzSm]="6" [nzXs]="24">报表任务</nz-form-label>
           <nz-form-control [nzSm]="14" [nzXs]="24">
             <span>{{STASKNAME}}</span>
           </nz-form-control>
@@ -90,6 +90,16 @@ import { Validators } from '@angular/forms';
           <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="SDES">说明</nz-form-label>
           <nz-form-control [nzSm]="14" [nzXs]="24">
             <textarea row="4" nz-input formControlName="SDES" placeholder="请输入" id="SDES"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24">上传附件</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-upload [nzFileList]="fileList" [nzBeforeUpload]="beforeUpload">
+              <button nz-button>
+                <i class="anticon anticon-upload"></i><span>选择文件</span>
+              </button>
+              </nz-upload>
           </nz-form-control>
         </nz-form-item>
       </form>
@@ -194,9 +204,13 @@ export class FormatAddModalComponent implements OnInit {
   HNAME: any[] = [];
   DNAME: any[] = [];
   validateForm: FormGroup;
-
+  fileList: UploadFile[] = [];
   STASKNAME: String;
   STASKCODE: String;
+  beforeUpload = (file: UploadFile): boolean => {
+    this.fileList.push(file);
+    return false;
+  }
 
   @Input()
   set param(value: any) {

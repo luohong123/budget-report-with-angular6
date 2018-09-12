@@ -62,6 +62,7 @@ export class BgrpFormatComponent implements OnInit {
     isVisible = false;
     listOfOption: any[] = [];
     TASKCODE: String = '';
+    loading: Boolean = false;
 
     rpListOption: any = {
         // 是否显示工具栏
@@ -160,6 +161,7 @@ export class BgrpFormatComponent implements OnInit {
     }
 
     queryRowData(): void {
+        this.loading = true;
         this.data = [];
         const array = [];
         this.mainService.queryData(this.TASKCODE).subscribe(result => {
@@ -167,6 +169,7 @@ export class BgrpFormatComponent implements OnInit {
                 array.push(element);
             });
             this.data = array;
+            this.loading = false;
         });
     }
     // 表格操作按钮事件
@@ -329,5 +332,3 @@ export class BgrpFormatComponent implements OnInit {
         });
     }
 }
-
-

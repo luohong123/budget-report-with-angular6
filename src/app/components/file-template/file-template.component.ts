@@ -19,6 +19,7 @@ export class FileTemplateComponent implements OnInit {
 
     isVisible = false;
     chooseDeleteParam: any;
+    loading: Boolean = true;
 
     rpListOption: any = {
         // 是否显示工具栏
@@ -88,6 +89,7 @@ export class FileTemplateComponent implements OnInit {
      * 根据任务Id查询表格数据
      */
     queryRowData(): void {
+        this.loading = true;
         this.data = [];
         const array = [];
         this.mainService.queryData(this.TASKCODE).subscribe(result => {
@@ -95,6 +97,7 @@ export class FileTemplateComponent implements OnInit {
                 array.push(element);
             });
             this.data = array;
+            this.loading = false;
         });
     }
     /**
@@ -158,9 +161,7 @@ export class FileTemplateComponent implements OnInit {
         });
         // 当关闭对话框时判断是否已经新增了数据,若已新增则更新表格数据
         modal.afterClose.subscribe((result) => {
-            console.log(modal);
             modal.destroy();
-            console.log(modal);
             if (result !== undefined && result.data === 'refresh') {
                 // 更新表格数据
                 this_.queryRowData();
@@ -182,9 +183,10 @@ export class FileTemplateComponent implements OnInit {
             nzTitle: '编辑模板',
             nzContent: FileTemplateEditModalComponent,
             nzWidth: '550',
+            // nzFooter: null,
             nzOnOk(componentParam) {
                 const condition = {
-                    ID: componentParam.ID,
+                    STEMPLATEID: componentParam.STEMPLATEID,
                     SNAME: componentParam.SNAME,
                     SDES: componentParam.SDES,
                 };
