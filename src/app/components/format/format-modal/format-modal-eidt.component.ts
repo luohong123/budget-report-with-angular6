@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
 /**
  * 新增报表格式页面
@@ -7,67 +11,56 @@ import { Input } from '@angular/core';
 @Component({
   selector: 'rp-format-modal-edit',
   template: `
-    <div class="steps-content">
-      <div class="form-control clearfix">
-        <label>报表任务:</label>
-        <span class="form-right">{{STASKNAME}}</span>
-      </div>
-      <div class="form-control clearfix">
-        <label>格式名称:</label>
-        <input class="form-right" nz-input placeholder="请输入格式名称" [(ngModel)]="SNAME" name="SNAME"/>
-      </div>
-      <div class="form-control clearfix">
-        <label>格式编号:</label>
-        <input class="form-right" nz-input placeholder="请输入格式名称" [(ngModel)]="SCODE" name="SCODE"/>
-      </div>
-      <div class="form-control clearfix">
-        <label>头属性:</label>
-        <span class="form-right">{{H}}</span>
-      </div>
-      <div class="form-control clearfix">
-        <label>数据属性:</label>
-        <span class="form-right">{{D}}</span>
-      </div>
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24">报表任务</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <span>{{STASKNAME}}</span>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="SNAME">格式名称</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="SNAME" placeholder="请输入格式名称" id="SNAME"/>
+          <nz-form-explain *ngIf="validateForm.get('SNAME').dirty && validateForm.get('SNAME').
+            errors">格式名称不能为空!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24">格式编号</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <span>{{SCODE}}</span>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24">头属性</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <span class="form-right">{{H}}</span>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24">数据属性</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <span class="form-right">{{D}}</span>
+        </nz-form-control>
+      </nz-form-item>
       <!--<div class="form-control clearfix">
         <label>排序号:</label>
         <input class="form-right" nz-input placeholder="请输入排序号" [(ngModel)]="NORDER" name="NORDER"/>
       </div>-->
-      <div class="form-control form-textarea clearfix">
-        <label>说明:</label>
-        <textarea row="4" class="form-right" nz-input [(ngModel)]="SDES" placeholder="请输入格式说明" name="SDES"></textarea>
-      </div>
-    </div>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="SDES">说明</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <textarea row="4" nz-input formControlName="SDES" placeholder="请输入" id="SDES"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
   `,
   styles: [
-    ` .clearfix{clear:both;}
-      .steps-content {
-        height:auto;
-        margin-top: 16px;
-        border-radius: 6px;
-        text-align: center;
-        padding: 10px 20px;
-      }
-      .form-control{width:100%;height:32px;line-height:32px;margin-bottom:10px;}
-      .form-control label{width:25%;float:left;text-align:right;padding-right:10px;}
-      .form-control .form-right{float:left;width:60%;text-align:left;}
-      .form-control span.form-right{text-align:left;}
-      .form-textarea{height:50px;line-height:50px;}
-      .steps-action{
-        text-align: center;
-        margin: 0px -24px;
-        padding: 10px 20px 0px;
-      }
-      .success_box{width:100%;}
-      .success_box .ant-steps-item-icon{border:1px solid #52c41a;background:#52c41a;width:40px;height:40px;}
-      .success_box .ant-steps-item-icon>.ant-steps-icon{color:#fff;top:3px;}
-      .success_box dd{font-size:20px;margin-top:10px;}
-      .form-controls{clear:both;height:64px;}
-      .form-control3{width:50%;float:left;margin-bottom:0px;}
-      .form-control3 label,.form-control3 .form-right{width:50%;}
-    `
+    ``
   ]
 })
-export class FormatEditModalComponent {
+export class FormatEditModalComponent implements OnInit {
   ID: String;
   SNAME: String;
   SCODE: String;
@@ -77,9 +70,9 @@ export class FormatEditModalComponent {
   NORDER: number;
   STASKNAME: String;
   TASKID: String;
+  validateForm: FormGroup;
   @Input()
   set param(value: any) {
-    console.log(value);
     this.STASKNAME = value.TASK.STASKNAME;
     this.SNAME = value.PARAM.SNAME;
     this.SCODE = value.PARAM.SCODE;
@@ -88,6 +81,14 @@ export class FormatEditModalComponent {
     this.SDES = value.PARAM.SDES;
     this.ID = value.PARAM.ID;
   }
-  constructor() {
+  constructor(
+    private fb: FormBuilder) {
+  }
+  ngOnInit(): void {
+    const this_ = this;
+    this.validateForm = this.fb.group({
+      SNAME: [ this_.SNAME, [ Validators.required ] ],
+      SDES: [ this_.SDES, [ Validators.nullValidator ] ],
+    });
   }
 }

@@ -299,12 +299,14 @@ export class BgrpFormatComponent implements OnInit {
             nzContent: FormatEditModalComponent,
             nzWidth: '550',
             nzOnOk(componentParam) {
-                const condition = {
-                    ID: componentParam.ID,
-                    SNAME: componentParam.SNAME,
-                    SCODE: componentParam.SCODE,
-                    SDES: componentParam.SDES,
-                };
+                const condition = componentParam.validateForm.value;
+                condition.ID = componentParam.ID;
+                // const condition = {
+                //     ID: componentParam.ID,
+                //     SNAME: componentParam.SNAME,
+                //     SCODE: componentParam.SCODE,
+                //     SDES: componentParam.SDES,
+                // };
                 this_.updateData(condition);
             },
             nzOnCancel(componentParam) {

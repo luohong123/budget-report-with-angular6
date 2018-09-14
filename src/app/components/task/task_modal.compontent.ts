@@ -7,6 +7,7 @@ import { Observable, Observer } from 'rxjs';
 import { ValidationErrors } from '@angular/forms';
 import { ValidatorFn } from '@angular/forms';
 import { AbstractControl } from '@angular/forms';
+import { DISABLED } from '@angular/forms/src/model';
 // import { NzModalSubject } from 'ng-zorro-antd';
 
 @Component({
@@ -16,7 +17,8 @@ import { AbstractControl } from '@angular/forms';
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="STASKCODE">任务编码</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
-        <input nz-input formControlName="STASKCODE" placeholder="请输入任务编码" id="STASKCODE" (blur)="onBlurTaskCode()"/>
+        <input nz-input formControlName="STASKCODE" placeholder="请输入任务编码" id="STASKCODE"
+          (blur)="onBlurTaskCode()"/>
         <nz-form-explain *ngIf="validateForm.get('STASKCODE').dirty && validateForm.get('STASKCODE').
           errors.required">任务编码不能为空!</nz-form-explain>
         <nz-form-explain *ngIf="validateForm.get('STASKCODE').dirty && validateForm.get('STASKCODE').
@@ -62,8 +64,8 @@ export class TaskModalComponent implements OnInit {
     NORDER: any;
     SDES: String;
     ID: String;
-
     validateForm: FormGroup;
+
 
     @Input()
     set param(value: any) {
@@ -84,7 +86,7 @@ export class TaskModalComponent implements OnInit {
     ngOnInit(): void {
       const this_ = this;
       this.validateForm = this.fb.group({
-        STASKCODE: [ this_.STASKCODE, [ Validators.required ] ],
+        STASKCODE: [ {value: this_.STASKCODE, disabled:  this_.STASKCODE === undefined ? false : true}, [ Validators.required ] ],
         STASKNAME: [ this_.STASKNAME, [ Validators.required ] ],
         NORDER: [ this_.NORDER, [ Validators.pattern(/^[0-9]*$/) ] ],
         SDES: [ this_.SDES, [ Validators.nullValidator ] ],

@@ -185,11 +185,8 @@ export class FileTemplateComponent implements OnInit {
             nzWidth: '550',
             // nzFooter: null,
             nzOnOk(componentParam) {
-                const condition = {
-                    STEMPLATEID: componentParam.STEMPLATEID,
-                    SNAME: componentParam.SNAME,
-                    SDES: componentParam.SDES,
-                };
+                const condition = componentParam.validateForm.value;
+                condition.STEMPLATEID = componentParam.STEMPLATEID;
                 this_.updateData(condition);
             },
             nzOnCancel(componentParam) {
