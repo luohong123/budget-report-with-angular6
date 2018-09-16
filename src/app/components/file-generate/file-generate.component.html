@@ -1,0 +1,47 @@
+<div>
+  <!-- <div nz-row>
+      <button nz-button nzType="primary" (click)="addClick()">发布</button>
+  </div> -->
+  <div nz-row>
+      <div nz-col nzSpan="2">
+        <span>报表任务:</span>
+      </div>
+      <div nz-col nzSpan="6">
+        <nz-select style="width: 200px;" [(ngModel)]='TASKCODE' name="STASKCODE" (ngModelChange)="selectTask($event)"	>
+          <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.STASKNAME" [nzValue]="option.STASKCODE"></nz-option>
+        </nz-select>
+      </div>
+  </div>
+  <div>
+    <nz-table #nestedTable [nzData]="nestedTableData" [nzLoading]="nestedLoading" [nzPageSize]="10">
+      <thead>
+        <tr>
+          <th nzShowExpand></th>
+          <th>文件名称</th>
+          <th>文件属性</th>
+          <th>文件类型</th>
+          <th>发布状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template ngFor let-data [ngForOf]="nestedTable.data">
+          <tr>
+            <td nzShowExpand [(nzExpand)]="data.expand"></td>
+            <td>{{data.SNAME}}</td>
+            <td>{{data.SATTRCODE}}</td>
+            <td>{{data.STYPE}}</td>
+            <td>已发布</td>
+            <td><a>发布</a></td>
+          </tr>
+          <tr [nzExpand]="data.expand">
+            <td></td>
+            <td colspan="7">
+              <rp-file-generate-subtable></rp-file-generate-subtable>
+            </td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
