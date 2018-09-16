@@ -7,12 +7,12 @@ export class BgrpTaskService {
   }
 
   queryData(condition: any) {
-    return this.daoService.postFromApi('BUDGET/BG_RP_TASK/queryTaskData', condition);
+    return this.daoService.postFromApi('BUDGET/RP_TASK/queryTaskData', condition);
   }
   insertOrUpdate(param: any) {
-    return this.daoService.postFromApi('BUDGET/BG_RP_TASK/insertOrUpdate', param);
+    return this.daoService.postFromApi('BUDGET/RP_TASK/insertOrUpdate', param);
   }
   deleteOne(param: any) {
-    return this.daoService.postFromApi('BUDGET/BG_RP_TASK/delete', param);
+    return this.daoService.postFromApi('BUDGET/RP_TASK/delete', param);
   }
 }

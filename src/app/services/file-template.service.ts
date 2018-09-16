@@ -7,15 +7,15 @@ export class BgrpFileTemplateService {
   }
 
   queryData(condition: any) {
-    return this.daoService.postFromApi('BUDGET/BG_RP_FileTemplate/queryFileTemplateData', condition);
+    return this.daoService.postFromApi('BUDGET/RP_FileTemplate/queryFileTemplateData', condition);
   }
   insertOrUpdate(param: any) {
-    return this.daoService.postFromApi('BUDGET/BG_RP_FileTemplate/insertOrUpdate', param);
+    return this.daoService.postFromApi('BUDGET/RP_FileTemplate/insertOrUpdate', param);
   }
   deleteOne(param: any) {
-    return this.daoService.postFromApi('BUDGET/BG_RP_FileTemplate/delete', param);
+    return this.daoService.postFromApi('BUDGET/RP_FileTemplate/delete', param);
   }
   queryAttr(param: any) {
-    return this.daoService.postFromApi('BUDGET/BG_RP_FORMAT/queryAttr', param);
+    return this.daoService.postFromApi('BUDGET/RP_FORMAT/queryAttr', param);
   }
 }

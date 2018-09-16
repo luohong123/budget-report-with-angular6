@@ -9,7 +9,7 @@ export class DemoService {
 
   }
   test() {
-    this.daoService.postFromApi('BUDGET/BG_RP_TASK/queryTaskData', {
+    this.daoService.postFromApi('BUDGET/RP_TASK/queryTaskData', {
       STASKCODE : '',
       STASKNAME : ''
   }).subscribe(res => {

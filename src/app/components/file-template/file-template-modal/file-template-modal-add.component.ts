@@ -192,6 +192,7 @@ export class FileTemplateAddModalComponent implements OnInit {
       SDIM_NAME = e.SDIM_NAME;
       attrListInversion[SDIM_CODE] = SDIM_NAME;
     });
+    this_.SATTR = this.validateForm.value.SATTR;
     this_.SATTR.forEach(function(e) {
       this_.attrName.push(attrListInversion[e]);
     });

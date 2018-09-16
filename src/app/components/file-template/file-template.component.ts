@@ -186,7 +186,7 @@ export class FileTemplateComponent implements OnInit {
             // nzFooter: null,
             nzOnOk(componentParam) {
                 const condition = componentParam.validateForm.value;
-                condition.STEMPLATEID = componentParam.STEMPLATEID;
+                condition.STMPLID = componentParam.STMPLID;
                 this_.updateData(condition);
             },
             nzOnCancel(componentParam) {

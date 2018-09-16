@@ -53,7 +53,7 @@ import { Validators } from '@angular/forms';
   ]
 })
 export class FileTemplateEditModalComponent implements OnInit {
-  STEMPLATEID: String;
+  STMPLID: String;
   SNAME: String;
   STYPE: String;
   SATTRCODE: String;
@@ -69,7 +69,7 @@ export class FileTemplateEditModalComponent implements OnInit {
     this.STYPE = value.PARAM.STYPE;
     this.SATTRCODE = value.PARAM.SATTRCODE;
     this.SDES = value.PARAM.SDES;
-    this.STEMPLATEID = value.PARAM.STEMPLATEID;
+    this.STMPLID = value.PARAM.STMPLID;
   }
   constructor(
     private fb: FormBuilder) {

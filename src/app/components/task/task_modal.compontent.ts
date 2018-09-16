@@ -3,13 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BgrpTaskService } from 'src/app/services/task.service';
 import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
 import { FormControl } from '@angular/forms';
-import { Observable, Observer } from 'rxjs';
-import { ValidationErrors } from '@angular/forms';
-import { ValidatorFn } from '@angular/forms';
-import { AbstractControl } from '@angular/forms';
-import { DISABLED } from '@angular/forms/src/model';
-// import { NzModalSubject } from 'ng-zorro-antd';
-
 @Component({
   selector: 'rp-task-modal',
   template: `
