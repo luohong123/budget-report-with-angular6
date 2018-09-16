@@ -6,7 +6,6 @@ import { BgrpTaskComponent } from 'src/app/components/task/task.compontent';
 import { BgrpFormatComponent } from 'src/app/components/format/format.compontent';
 import { FileTemplateComponent } from 'src/app/components/file-template/file-template.component';
 import { CatalogComponent } from './components/catalog/catalog.component';
-import { FileGenerateSubtableComponent } from 'src/app/components/file-generate/file-generate-subtable.component';
 import { FileGenerateComponent } from 'src/app/components/file-generate/file-generate.component';
 
 const routes: Routes = [
