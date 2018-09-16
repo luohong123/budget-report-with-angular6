@@ -31,6 +31,8 @@ import { CatalogAddComponent } from './components/catalog/catalog-add.compoent';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CatalogService } from 'src/app/services/catalog.services';
 import { ListDataFilter } from 'src/app/pipe/report.pipe';
+import { FileGenerateComponent } from './components/file-generate/file-generate.component';
+import { FileGenerateSubtableComponent } from 'src/app/components/file-generate/file-generate-subtable.component';
 
 registerLocaleData(zh);
 
@@ -59,7 +61,9 @@ registerLocaleData(zh);
     FormatEditModalComponent,
     CatalogComponent,
     CatalogAddComponent,
-    ListDataFilter
+    ListDataFilter,
+    FileGenerateComponent,
+    FileGenerateSubtableComponent
   ],
   imports: [
     BrowserModule,
